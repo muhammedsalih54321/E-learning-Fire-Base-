@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_learning_firebase/Ui/Components/Home%20Container.dart';
-import 'package:e_learning_firebase/Ui/Components/Toastmessage.dart';
-import 'package:e_learning_firebase/Ui/Screens/Auth/Sign%20in.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,9 +14,10 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final auth = FirebaseAuth.instance;
-
-  final firestore = FirebaseFirestore.instance.collection('Data');
+  final firestore1 =
+      FirebaseFirestore.instance.collection('StudentAlsoSearch').snapshots();
+  final firestore2 =
+      FirebaseFirestore.instance.collection('TopCoursesinIT').snapshots();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,22 +50,8 @@ class _HomeState extends State<Home> {
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 10),
-            child: IconButton(
-                onPressed: () {
-                  auth
-                      .signOut()
-                      .then(
-                        (value) => {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (_) => Sign_in()))
-                        },
-                      )
-                      .onError(
-                        (error, stackTrace) => ToastMessage()
-                            .toastmessage(message: error.toString()),
-                      );
-                },
-                icon: Icon(Icons.shopping_cart)),
+            child:
+                IconButton(onPressed: () {}, icon: Icon(Icons.shopping_cart)),
           )
         ],
       ),
@@ -202,7 +187,47 @@ class _HomeState extends State<Home> {
               SizedBox(
                 height: 30.h,
               ),
-              Home_container(),
+              SizedBox(
+                height: 209.h,
+                child: Container(
+                    child: StreamBuilder<QuerySnapshot>(
+                        stream: firestore1,
+                        builder:
+                            (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                          if (!snapshot.hasData) {
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                          if (snapshot.hasError) {
+                            return Center(
+                              child: Text('error'),
+                            );
+                          }
+                          if (snapshot.hasData) {
+                            return ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: snapshot.data!.docs.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Home_container(
+                                    img: snapshot.data!.docs[index]["Thumnail"]
+                                        .toString(),
+                                    rating: snapshot.data!.docs[index]["rating"]
+                                        .toString(),
+                                    Coursename: snapshot
+                                        .data!.docs[index]["Course name"]
+                                        .toString(),
+                                    name: snapshot.data!.docs[index]["name"]
+                                        .toString(),
+                                    Price: snapshot.data!.docs[index]["Price"]
+                                        .toString());
+                              },
+                            );
+                          } else {
+                            return SizedBox();
+                          }
+                        })),
+              ),
               SizedBox(
                 height: 30.h,
               ),
@@ -234,7 +259,47 @@ class _HomeState extends State<Home> {
               SizedBox(
                 height: 30.h,
               ),
-              Home_container()
+              SizedBox(
+                height: 209.h,
+                child: Container(
+                    child: StreamBuilder<QuerySnapshot>(
+                        stream: firestore2,
+                        builder:
+                            (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                          if (!snapshot.hasData) {
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                          if (snapshot.hasError) {
+                            return Center(
+                              child: Text('error'),
+                            );
+                          }
+                          if (snapshot.hasData) {
+                            return ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: snapshot.data!.docs.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Home_container(
+                                    img: snapshot.data!.docs[index]["Thumnail"]
+                                        .toString(),
+                                    rating: snapshot.data!.docs[index]["rating"]
+                                        .toString(),
+                                    Coursename: snapshot
+                                        .data!.docs[index]["Course name"]
+                                        .toString(),
+                                    name: snapshot.data!.docs[index]["name"]
+                                        .toString(),
+                                    Price: snapshot.data!.docs[index]["Price"]
+                                        .toString());
+                              },
+                            );
+                          } else {
+                            return SizedBox();
+                          }
+                        })),
+              ),
             ],
           ),
         ),

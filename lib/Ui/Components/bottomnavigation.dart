@@ -73,8 +73,7 @@ class _BottomnavigationState extends State<Bottomnavigation> {
                   label: 'Account'),
               BottomNavigationBarItem(
              
-                  icon: Icon(Icons.person_outline_rounded,size: 28.sp,
-                      color: currentindex == 4 ? Colors.orange : Colors.black),
+                  icon: CircleAvatar(radius:13.r,backgroundColor: Colors.amber,),
                   label: 'Cart'),
             ]),
       ),
