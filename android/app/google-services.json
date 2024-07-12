@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "943545758147",
+    "project_id": "e-learning-2bfaa",
+    "storage_bucket": "e-learning-2bfaa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:943545758147:android:8c354cd643705707574d76",
+        "android_client_info": {
+          "package_name": "com.example.e_learning_firebase"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmXSzLmar-lH2ColONFUCcPXD68v3RKGI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
