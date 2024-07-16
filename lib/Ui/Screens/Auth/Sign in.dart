@@ -27,7 +27,7 @@ class _Sign_inState extends State<Sign_in> {
   final formKey = GlobalKey<FormState>();
   @override
   void initState() {
-    isobscure = false;
+    isobscure = true;
     super.initState();
   }
   Future<void>signinwithgoogle()async{

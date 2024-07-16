@@ -14,7 +14,7 @@ class Splash extends StatefulWidget {
 }
 
 class _SplashState extends State<Splash> {
-  void islogin() {
+  void islogin(BuildContext context) {
     final auth = FirebaseAuth.instance;
     final user = auth.currentUser;
 
@@ -22,19 +22,20 @@ class _SplashState extends State<Splash> {
       Timer(
           Duration(seconds: 3),
           () => Navigator.push(
-              context, MaterialPageRoute(builder: (_) => Sign_in())));
+              context, MaterialPageRoute(builder: (_) => Bottomnavigation())));
     } else {
       Timer(
           Duration(seconds: 3),
           () => Navigator.push(
-              context, MaterialPageRoute(builder: (_) => Bottomnavigation())));
+              context, MaterialPageRoute(builder: (_) => Sign_in())));
     }
   }
 
   @override
   void initState() {
+    islogin(context);
     super.initState();
-    islogin();
+  
   }
 
   @override

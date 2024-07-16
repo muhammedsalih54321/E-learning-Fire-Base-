@@ -28,7 +28,7 @@ class _Sign_upState extends State<Sign_up> {
   final formKey = GlobalKey<FormState>();
   @override
   void initState() {
-    isobscure = false;
+    isobscure = true;
     super.initState();
   }
 
