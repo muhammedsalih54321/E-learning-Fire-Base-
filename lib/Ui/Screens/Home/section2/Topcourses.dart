@@ -1,25 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:e_learning_firebase/Ui/Components/Home%20Container.dart';
+
+import 'package:e_learning_firebase/Ui/Components/Home%20Container2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class Studentalso extends StatefulWidget {
-  const Studentalso({super.key});
+class Topcourses extends StatefulWidget {
+  const Topcourses({super.key});
 
   @override
-  State<Studentalso> createState() => _StudentalsoState();
+  State<Topcourses> createState() => _TopcoursesState();
 }
 
-class _StudentalsoState extends State<Studentalso> {
-  final firestore1 =
-      FirebaseFirestore.instance.collection('StudentAlsoSearch').snapshots();
+class _TopcoursesState extends State<Topcourses> {
+    final firestore2 =
+      FirebaseFirestore.instance.collection('TopCoursesinIT').snapshots();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            'Students Also Search for',
+            'Top Courses in IT',
             style: GoogleFonts.plusJakartaSans(
               color: Color(0xFF1D1B20),
               fontSize: 18.sp,
@@ -30,9 +31,9 @@ class _StudentalsoState extends State<Studentalso> {
           ),
         ),
         body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal:18),
+          padding: const EdgeInsets.symmetric(horizontal: 18),
           child: StreamBuilder<QuerySnapshot>(
-              stream: firestore1,
+              stream: firestore2,
               builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (!snapshot.hasData) {
                   return Center(
@@ -55,7 +56,7 @@ class _StudentalsoState extends State<Studentalso> {
                       itemBuilder: (context, index) { 
                            return  Padding(
                              padding: const EdgeInsets.symmetric(horizontal: 5),
-                             child: Home_container(
+                             child: Home_container2(
                               
                                         img: snapshot.data!.docs[index]["Thumnail"]
                                             .toString(),
@@ -68,7 +69,7 @@ class _StudentalsoState extends State<Studentalso> {
                                             .toString(),
                                         Price: snapshot.data!.docs[index]["Price"]
                                             .toString(), star: double.parse(snapshot.data!.docs[index]["rating"]
-                                            .toString()),),
+                                            .toString()), index: index,),
                            );
           
                       });

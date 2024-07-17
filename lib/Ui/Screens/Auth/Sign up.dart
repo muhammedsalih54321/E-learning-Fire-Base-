@@ -300,7 +300,7 @@ class _Sign_upState extends State<Sign_up> {
                               loading = false;
                             });
                             ToastMessage().toastmessage(message: 'Succesfull');
-                            Navigator.push(context, MaterialPageRoute(builder: (_)=>Bottomnavigation()));
+                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>Bottomnavigation()));
                           },
                         ).onError(
                           (error, stackTrace) => ToastMessage()

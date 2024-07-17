@@ -1,28 +1,23 @@
-import 'package:e_learning_firebase/Ui/Screens/Details.dart';
+import 'package:e_learning_firebase/Ui/Screens/Home/section2/Details2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class Home_container extends StatelessWidget {
-  final String img;
+class Home_container2 extends StatelessWidget {
+    final String img;
   final String rating;
   final String Coursename;
   final String name;
   final String Price;
   final double star;
-  const Home_container(
-      {super.key,
-      required this.img,
-      required this.rating,
-      required this.Coursename,
-      required this.name,
-      required this.Price, required this.star});
+  final int index;
+  const Home_container2({super.key, required this.img, required this.rating, required this.Coursename, required this.name, required this.Price, required this.star, required this.index});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.push(context,MaterialPageRoute(builder: (_)=>Details())),
+      onTap: () => Navigator.push(context,MaterialPageRoute(builder: (_)=>Details2(index: index))),
       child: Container(
       
         width: 158.72.h,

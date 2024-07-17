@@ -21,7 +21,7 @@ class _SplashState extends State<Splash> {
     if (user != null) {
       Timer(
           Duration(seconds: 3),
-          () => Navigator.push(
+          () => Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (_) => Bottomnavigation())));
     } else {
       Timer(

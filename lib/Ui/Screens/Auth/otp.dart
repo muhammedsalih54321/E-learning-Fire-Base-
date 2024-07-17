@@ -114,7 +114,7 @@ class _OtpState extends State<Otp> {
                           } catch (e) {
                             ToastMessage().toastmessage(message: e.toString());
                           }
-                          Navigator.push(
+                          Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                   builder: (_) => Bottomnavigation()));

@@ -48,6 +48,7 @@ dependencies:
   flick_video_player: ^0.8.0
   image_picker: ^1.1.2
   firebase_storage: ^12.1.0
+  chewie:
 
 
 dev_dependencies:

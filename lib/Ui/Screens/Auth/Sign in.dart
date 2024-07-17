@@ -43,7 +43,7 @@ class _Sign_inState extends State<Sign_in> {
       final UserCredential userCredential= await auth.signInWithCredential(credential);
       final User? user= userCredential.user;
       if (user!=null) {
-        Navigator.push(context, MaterialPageRoute(builder: (_)=>Bottomnavigation()));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>Bottomnavigation()));
         ToastMessage().toastmessage(message: 'succusfully completed');
       }
     } catch (e) {

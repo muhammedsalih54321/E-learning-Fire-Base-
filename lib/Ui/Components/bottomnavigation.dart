@@ -1,6 +1,6 @@
 import 'package:e_learning_firebase/Ui/Screens/Chat.dart';
 import 'package:e_learning_firebase/Ui/Screens/Course.dart';
-import 'package:e_learning_firebase/Ui/Screens/Home.dart';
+import 'package:e_learning_firebase/Ui/Screens/Home/Home.dart';
 import 'package:e_learning_firebase/Ui/Screens/Profile.dart';
 import 'package:e_learning_firebase/Ui/Screens/Search.dart';
 import 'package:flutter/cupertino.dart';
@@ -71,16 +71,16 @@ class _BottomnavigationState extends State<Bottomnavigation> {
                         size: 28.sp,
                         color: currentindex == 1 ? Colors.orange : Colors.black,
                       ),
-                       SizedBox(
-                      height: 5.h,
-                    ),
-                    currentindex == 1
-                        ? Container(
-                            height: 2.h,
-                            width: 20.w,
-                            color: Colors.yellow,
-                          )
-                        : SizedBox()
+                      SizedBox(
+                        height: 5.h,
+                      ),
+                      currentindex == 1
+                          ? Container(
+                              height: 2.h,
+                              width: 20.w,
+                              color: Colors.yellow,
+                            )
+                          : SizedBox()
                     ],
                   ),
                   label: 'Wishlist'),
@@ -89,17 +89,18 @@ class _BottomnavigationState extends State<Bottomnavigation> {
                     children: [
                       Icon(Icons.search,
                           size: 28.sp,
-                          color: currentindex == 2 ? Colors.orange : Colors.black),
-                           SizedBox(
-                      height: 5.h,
-                    ),
-                    currentindex == 2
-                        ? Container(
-                            height: 2.h,
-                            width: 20.w,
-                            color: Colors.yellow,
-                          )
-                        : SizedBox()
+                          color:
+                              currentindex == 2 ? Colors.orange : Colors.black),
+                      SizedBox(
+                        height: 5.h,
+                      ),
+                      currentindex == 2
+                          ? Container(
+                              height: 2.h,
+                              width: 20.w,
+                              color: Colors.yellow,
+                            )
+                          : SizedBox()
                     ],
                   ),
                   label: 'Catogories'),
@@ -108,37 +109,53 @@ class _BottomnavigationState extends State<Bottomnavigation> {
                     children: [
                       Icon(CupertinoIcons.chat_bubble,
                           size: 28.sp,
-                          color: currentindex == 3 ? Colors.orange : Colors.black),
-                           SizedBox(
-                      height: 5.h,
-                    ),
-                    currentindex == 3
-                        ? Container(
-                            height: 2.h,
-                            width: 20.w,
-                            color: Colors.yellow,
-                          )
-                        : SizedBox()
+                          color:
+                              currentindex == 3 ? Colors.orange : Colors.black),
+                      SizedBox(
+                        height: 5.h,
+                      ),
+                      currentindex == 3
+                          ? Container(
+                              height: 2.h,
+                              width: 20.w,
+                              color: Colors.yellow,
+                            )
+                          : SizedBox()
                     ],
                   ),
                   label: 'Account'),
               BottomNavigationBarItem(
                   icon: Column(
                     children: [
-                      CircleAvatar(
-                        radius: 13.r,
-                        backgroundColor: Colors.amber,
+                      Container(
+                        width: 24.w,
+                        height: 24.h,
+                        decoration: ShapeDecoration(
+                          image: DecorationImage(
+                            image: NetworkImage(
+                                "https://via.placeholder.com/24x24"),
+                            fit: BoxFit.fill,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(
+                              width: 1.50.w,
+                              strokeAlign: BorderSide.strokeAlignOutside,
+                              color: Color(0xFFF6C354),
+                            ),
+                            borderRadius: BorderRadius.circular(83.64.r),
+                          ),
+                        ),
                       ),
-                       SizedBox(
-                      height: 5.h,
-                    ),
-                    currentindex == 4
-                        ? Container(
-                            height: 2.h,
-                            width: 20.w,
-                            color: Colors.yellow,
-                          )
-                        : SizedBox()
+                      SizedBox(
+                        height: 5.h,
+                      ),
+                      currentindex == 4
+                          ? Container(
+                              height: 2.h,
+                              width: 20.w,
+                              color: Colors.yellow,
+                            )
+                          : SizedBox()
                     ],
                   ),
                   label: 'Cart'),

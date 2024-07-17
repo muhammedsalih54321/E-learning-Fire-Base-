@@ -11,7 +11,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 
 class Profile extends StatefulWidget {
-  const Profile({super.key});
+ 
+  const Profile({super.key,});
 
   @override
   State<Profile> createState() => _ProfileState();
@@ -76,20 +77,30 @@ class _ProfileState extends State<Profile> {
                   return Column(
                     children: [
                       SizedBox(
-                        height: 30.h,
+                        height: 35.h,
                       ),
                       Stack(
                         clipBehavior: Clip.none,
                         children: [
-                          CircleAvatar(
-                            radius: 63.r,
-                             child: image != null
-                      ? Image.file(image!.absolute):SizedBox()
-                    
+                          Container(
+                            height: 115.h,
+                            width: 115.w,
+                            decoration: ShapeDecoration(
+                              color: Color(0xFF477B72),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(83.64.r),
+                              ),
+                            ),
+                            child:  image != null
+                      ? Image.file(image!.absolute)
+                      : Center(
+                          child: SizedBox()
+                        )
+            
                           ),
                           Positioned(
-                            top: 85.h,
-                            left: 85.w,
+                            top: 80.h,
+                            left: 80.w,
                             child: GestureDetector(
                               onTap: () {
                                 getimage();
@@ -102,7 +113,8 @@ class _ProfileState extends State<Profile> {
                                   shape: RoundedRectangleBorder(
                                     side: BorderSide(
                                       width: 3.w,
-                                      strokeAlign: BorderSide.strokeAlignOutside,
+                                      strokeAlign:
+                                          BorderSide.strokeAlignOutside,
                                       color: Color(0xFF477B72),
                                     ),
                                     borderRadius: BorderRadius.circular(8.r),
@@ -111,7 +123,8 @@ class _ProfileState extends State<Profile> {
                                 child: Center(
                                   child: Icon(
                                     Icons.photo_size_select_actual_outlined,
-                                    color: const Color.fromARGB(255, 87, 86, 86),
+                                    color:
+                                        const Color.fromARGB(255, 87, 86, 86),
                                   ),
                                 ),
                               ),
@@ -120,7 +133,7 @@ class _ProfileState extends State<Profile> {
                         ],
                       ),
                       SizedBox(
-                        height: 5.h,
+                        height: 8.h,
                       ),
                       Text(
                         snapshot.data!.docs[0]["FullName"].toString(),

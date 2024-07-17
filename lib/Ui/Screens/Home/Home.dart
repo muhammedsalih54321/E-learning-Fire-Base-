@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:e_learning_firebase/Ui/Components/Home%20Container.dart';
-import 'package:e_learning_firebase/Ui/Screens/StudentAlso.dart';
-import 'package:e_learning_firebase/Ui/Screens/Topcourses.dart';
+import 'package:e_learning_firebase/Ui/Components/Home%20Container1.dart';
+import 'package:e_learning_firebase/Ui/Components/Home%20Container2.dart';
+import 'package:e_learning_firebase/Ui/Screens/Home/section1/StudentAlso.dart';
+import 'package:e_learning_firebase/Ui/Screens/Home/section2/Topcourses.dart';
 
 import 'package:flutter/material.dart';
 
@@ -215,7 +216,7 @@ class _HomeState extends State<Home> {
                               itemBuilder: (BuildContext context, int index) {
                                 return Padding(
                                   padding: const EdgeInsets.only(right: 30),
-                                  child: Home_container(
+                                  child: Home_container1(
                                       img: snapshot.data!.docs[index]["Thumnail"]
                                           .toString(),
                                       rating: snapshot.data!.docs[index]["rating"]
@@ -227,7 +228,7 @@ class _HomeState extends State<Home> {
                                           .toString(),
                                       Price: snapshot.data!.docs[index]["Price"]
                                           .toString(), star: double.parse(snapshot.data!.docs[index]["rating"]
-                                          .toString()),),
+                                          .toString()), index: index,),
                                 );
                               },
                             );
@@ -293,7 +294,7 @@ class _HomeState extends State<Home> {
                               itemBuilder: (BuildContext context, int index) {
                                 return Padding(
                                   padding: const EdgeInsets.only(right: 30),
-                                  child: Home_container(
+                                  child: Home_container2(
                                       img: snapshot.data!.docs[index]["Thumnail"]
                                           .toString(),
                                       rating: snapshot.data!.docs[index]["rating"]
@@ -305,7 +306,7 @@ class _HomeState extends State<Home> {
                                           .toString(),
                                       Price: snapshot.data!.docs[index]["Price"]
                                           .toString(), star:  double.parse(snapshot.data!.docs[index]["rating"]
-                                          .toString()),),
+                                          .toString()), index: index,),
                                 );
                               },
                             );
