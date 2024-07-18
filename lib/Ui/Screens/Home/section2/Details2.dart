@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_learning_firebase/Ui/Components/Toastmessage.dart';
 import 'package:e_learning_firebase/Ui/Screens/Home/section2/videolist2.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,9 +18,12 @@ class Details2 extends StatefulWidget {
 
 class _Details2State extends State<Details2> {
   late FlickManager flickManager;
-
+    FirebaseAuth auth = FirebaseAuth.instance;
+ final id = DateTime.now().microsecondsSinceEpoch.toString();
   final firestore2 =
       FirebaseFirestore.instance.collection('TopCoursesinIT').snapshots();
+  final firestorecollection = FirebaseFirestore.instance
+      .collection('Users');
 
   Duration? videoDuration;
   Future<void> initializePlay({String? videoPath}) async {
@@ -113,7 +118,36 @@ class _Details2State extends State<Details2> {
                             ),
                           ),
                           IconButton(
-                              onPressed: () {}, icon: Icon(Icons.bookmark))
+                              onPressed: () {
+                                 
+                                firestorecollection.doc(auth.currentUser!.uid.toString()).collection("savedcourse").doc(snapshot.data!.docs[widget.index]["id"].toString()).set({
+                                  "id": snapshot.data!.docs[widget.index]["id"].toString() ,
+                                  "Course name": snapshot
+                                      .data!.docs[widget.index]["Course name"]
+                                      .toString(),
+                                  "Thumnail": snapshot.data!.docs[widget.index]["Thumnail"]
+                                      .toString(),
+                                  "rating": snapshot.data!.docs[widget.index]["rating"]
+                                      .toString(),
+                                  "name":
+                                      snapshot.data!.docs[widget.index]["name"].toString(),
+                                  "Price": snapshot.data!.docs[widget.index]["Price"]
+                                      .toString(),
+                                  "videos": snapshot.data!.docs[widget.index]["videos"]
+                                     
+                                }).then(
+                                  (value) {
+                                    ToastMessage()
+                                        .toastmessage(message: 'Saved succesfully');
+                                  },
+                                ).onError(
+                                  (error, stackTrace) {
+                                    ToastMessage().toastmessage(
+                                        message: error.toString());
+                                  },
+                                );
+                                ;
+                              }, icon:  Icon(Icons.bookmark))
                         ],
                       ),
                     ),

@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_learning_firebase/Ui/Components/Toastmessage.dart';
 import 'package:e_learning_firebase/Ui/Screens/Home/section1/videolist1.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +21,10 @@ class _DetailsState extends State<Details1> {
   late FlickManager flickManager;
   final firestore1 =
       FirebaseFirestore.instance.collection('StudentAlsoSearch').snapshots();
-
+  final firestorecollection = FirebaseFirestore.instance
+      .collection('Users');
+  
+  FirebaseAuth auth = FirebaseAuth.instance;
   Duration? videoDuration;
   Future<void> initializePlay({String? videoPath}) async {
     flickManager = FlickManager(
@@ -46,6 +51,26 @@ class _DetailsState extends State<Details1> {
     return true;
   }
 
+Future<void> checkSaved() async {
+  final firestoreCollection = FirebaseFirestore.instance.collection('Users');
+  final userDoc = firestoreCollection.doc(auth.currentUser!.uid);
+  
+  // Access the subcollection
+  final subcollection = userDoc.collection('savedcourse'); // Replace with your subcollection name
+  
+  // Get all documents in the subcollection
+  QuerySnapshot querySnapshot = await subcollection.get();
+  
+  // Get data from docs and convert map to List
+  final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
+  print("hi"+allData.toString());
+ // print("hi"+querySnapshot.docs.map((e){});
+  
+}
+
+
+
+
   @override
   void dispose() {
     flickManager.dispose();
@@ -56,6 +81,7 @@ class _DetailsState extends State<Details1> {
   @override
   void initState() {
     initializePlay();
+    checkSaved();
 
     super.initState();
   }
@@ -81,6 +107,7 @@ class _DetailsState extends State<Details1> {
                     videoPath: snapshot
                         .data?.docs[widget.index]['videos'][0]['URL']
                         .toString());
+                    
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -89,7 +116,7 @@ class _DetailsState extends State<Details1> {
                         width: double.infinity,
                         height: 280.h,
                         color: Colors.black,
-                    child: FlickVideoPlayer(flickManager: flickManager),
+                        child: FlickVideoPlayer(flickManager: flickManager),
                       ),
                     ),
                     SizedBox(
@@ -113,7 +140,37 @@ class _DetailsState extends State<Details1> {
                             ),
                           ),
                           IconButton(
-                              onPressed: () {}, icon: Icon(Icons.bookmark))
+                              onPressed: () {
+                             
+                                firestorecollection.doc(auth.currentUser!.uid.toString()).collection("savedcourse").doc(snapshot.data!.docs[widget.index]["id"].toString()).set({
+                                  "id":snapshot.data!.docs[widget.index]["id"].toString() ,
+                                  "Course name": snapshot
+                                      .data!.docs[widget.index]["Course name"]
+                                      .toString(),
+                                  "Thumnail": snapshot.data!.docs[widget.index]["Thumnail"]
+                                      .toString(),
+                                  "rating": snapshot.data!.docs[widget.index]["rating"]
+                                      .toString(),
+                                  "name":
+                                      snapshot.data!.docs[widget.index]["name"].toString(),
+                                  "Price": snapshot.data!.docs[widget.index]["Price"]
+                                      .toString(),
+                                  "videos": snapshot.data!.docs[widget.index]["videos"]
+                                     
+                                }).then(
+                                  (value) {
+                                    ToastMessage()
+                                        .toastmessage(message: 'Saved succesfully');
+                                  },
+                                ).onError(
+                                  (error, stackTrace) {
+                                    ToastMessage().toastmessage(
+                                        message: error.toString());
+                                  },
+                                );
+                                ;
+                              },
+                              icon: Icon(Icons.bookmark))
                         ],
                       ),
                     ),
@@ -154,9 +211,12 @@ class _DetailsState extends State<Details1> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 18),
                       child: GestureDetector(
-                        onTap: () => Navigator.push(context,MaterialPageRoute(builder: (_)=>Videolist2(videoUrl: snapshot
-                                .data!.docs[widget.index]['videos']
-                                ))),
+                        onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => Videolist2(
+                                    videoUrl: snapshot.data!.docs[widget.index]
+                                        ['videos']))),
                         child: Container(
                             width: double.infinity,
                             height: 57.h,

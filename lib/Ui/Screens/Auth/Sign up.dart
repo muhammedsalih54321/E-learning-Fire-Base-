@@ -17,7 +17,7 @@ class Sign_up extends StatefulWidget {
 
 class _Sign_upState extends State<Sign_up> {
   final name = TextEditingController();
-  final id = DateTime.now().microsecondsSinceEpoch.toString();
+  
   final email = TextEditingController();
   final password = TextEditingController();
   final Mobile = TextEditingController();
@@ -265,7 +265,7 @@ class _Sign_upState extends State<Sign_up> {
                         height: 0.10,
                       ),
                     ),
-                    obscureText: isobscure,
+                   
                     validator: (password) {
                       if (password!.isEmpty || password.length < 10) {
                         return 'Enter your mobile number';
@@ -289,8 +289,8 @@ class _Sign_upState extends State<Sign_up> {
                                 password: password.text.toString())
                             .then(
                           (value) async {
-                            firestore.doc(id).set({
-                              "id": id,
+                            firestore.doc(value.user!.uid.toString()).set({
+                              "id": value.user!.uid.toString(),
                               "FullName": name.text.toString(),
                               "email": email.text.toString(),
                               "Phone": Mobile.text.toString()
