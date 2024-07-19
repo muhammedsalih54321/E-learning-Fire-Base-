@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_learning_firebase/Ui/Components/Toastmessage.dart';
+
 import 'package:e_learning_firebase/Ui/Screens/Home/section1/videolist1.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -19,13 +20,15 @@ class Details1 extends StatefulWidget {
 
 class _DetailsState extends State<Details1> {
   late FlickManager flickManager;
+    bool loading = false;
   final firestore1 =
       FirebaseFirestore.instance.collection('StudentAlsoSearch').snapshots();
-  final firestorecollection = FirebaseFirestore.instance
-      .collection('Users');
-  
+  final firestorecollection = FirebaseFirestore.instance.collection('Users');
+
   FirebaseAuth auth = FirebaseAuth.instance;
   Duration? videoDuration;
+  bool saved = false;
+   bool favourate = false;
   Future<void> initializePlay({String? videoPath}) async {
     flickManager = FlickManager(
         videoPlayerController:
@@ -51,26 +54,6 @@ class _DetailsState extends State<Details1> {
     return true;
   }
 
-Future<void> checkSaved() async {
-  final firestoreCollection = FirebaseFirestore.instance.collection('Users');
-  final userDoc = firestoreCollection.doc(auth.currentUser!.uid);
-  
-  // Access the subcollection
-  final subcollection = userDoc.collection('savedcourse'); // Replace with your subcollection name
-  
-  // Get all documents in the subcollection
-  QuerySnapshot querySnapshot = await subcollection.get();
-  
-  // Get data from docs and convert map to List
-  final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
-  print("hi"+allData.toString());
- // print("hi"+querySnapshot.docs.map((e){});
-  
-}
-
-
-
-
   @override
   void dispose() {
     flickManager.dispose();
@@ -81,9 +64,63 @@ Future<void> checkSaved() async {
   @override
   void initState() {
     initializePlay();
-    checkSaved();
 
     super.initState();
+  }
+
+  Future<void> checkSaved(AsyncSnapshot<QuerySnapshot> snapshot) async {
+    final firestoreCollection = FirebaseFirestore.instance.collection('Users');
+    final userDoc = firestoreCollection.doc(auth.currentUser!.uid);
+
+    // Access the subcollection
+    final subcollection = userDoc
+        .collection('savedcourse'); // Replace with your subcollection name
+
+    // Get all documents in the subcollection
+    QuerySnapshot querySnapshot = await subcollection.get();
+
+    // Get data from docs and convert map to List
+
+    for (int i = 0; i < querySnapshot.docs.length; i++) {
+      if (querySnapshot.docs[i]['id'].toString() ==
+          snapshot.data!.docs[widget.index]['id'].toString()) {
+        print("item found");
+        setState(() {
+          saved = true;
+        });
+      } else {
+        print("item not found");
+      }
+    }
+
+    // print("hi"+querySnapshot.docs.map((e){});
+  }
+  Future<void> checkFavourate(AsyncSnapshot<QuerySnapshot> snapshot) async {
+    final firestoreCollection = FirebaseFirestore.instance.collection('Users');
+    final userDoc = firestoreCollection.doc(auth.currentUser!.uid);
+
+    // Access the subcollection
+    final subcollection = userDoc
+        .collection('favouratecourse'); // Replace with your subcollection name
+
+    // Get all documents in the subcollection
+    QuerySnapshot querySnapshot = await subcollection.get();
+
+    // Get data from docs and convert map to List
+
+    for (int i = 0; i < querySnapshot.docs.length; i++) {
+      if (querySnapshot.docs[i]['id'].toString() ==
+          snapshot.data!.docs[widget.index]['id'].toString()) {
+        print("item found");
+        setState(() {
+          favourate = true;
+        });
+      } else {
+        print("item not found");
+      }
+    }
+
+    // print("hi"+querySnapshot.docs.map((e){});
   }
 
   @override
@@ -107,7 +144,8 @@ Future<void> checkSaved() async {
                     videoPath: snapshot
                         .data?.docs[widget.index]['videos'][0]['URL']
                         .toString());
-                    
+                checkSaved(snapshot);
+                checkFavourate(snapshot);
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -139,38 +177,110 @@ Future<void> checkSaved() async {
                               letterSpacing: 0.18,
                             ),
                           ),
-                          IconButton(
-                              onPressed: () {
-                             
-                                firestorecollection.doc(auth.currentUser!.uid.toString()).collection("savedcourse").doc(snapshot.data!.docs[widget.index]["id"].toString()).set({
-                                  "id":snapshot.data!.docs[widget.index]["id"].toString() ,
-                                  "Course name": snapshot
-                                      .data!.docs[widget.index]["Course name"]
-                                      .toString(),
-                                  "Thumnail": snapshot.data!.docs[widget.index]["Thumnail"]
-                                      .toString(),
-                                  "rating": snapshot.data!.docs[widget.index]["rating"]
-                                      .toString(),
-                                  "name":
-                                      snapshot.data!.docs[widget.index]["name"].toString(),
-                                  "Price": snapshot.data!.docs[widget.index]["Price"]
-                                      .toString(),
-                                  "videos": snapshot.data!.docs[widget.index]["videos"]
-                                     
-                                }).then(
-                                  (value) {
-                                    ToastMessage()
-                                        .toastmessage(message: 'Saved succesfully');
+                          Wrap(
+                            children: [
+                                IconButton(onPressed: (){
+                                    firestorecollection
+                                        .doc(auth.currentUser!.uid.toString())
+                                        .collection("favouratecourse")
+                                        .doc(snapshot.data!.docs[widget.index]["id"]
+                                            .toString())
+                                        .set({
+                                       "ischecked":"true",   
+                                      "id": snapshot.data!.docs[widget.index]["id"]
+                                          .toString(),
+                                      "Course name": snapshot
+                                          .data!.docs[widget.index]["Course name"]
+                                          .toString(),
+                                      "Thumnail": snapshot
+                                          .data!.docs[widget.index]["Thumnail"]
+                                          .toString(),
+                                      "rating": snapshot
+                                          .data!.docs[widget.index]["rating"]
+                                          .toString(),
+                                      "name": snapshot
+                                          .data!.docs[widget.index]["name"]
+                                          .toString(),
+                                      "Price": snapshot
+                                          .data!.docs[widget.index]["Price"]
+                                          .toString(),
+                                      "videos": snapshot.data!.docs[widget.index]
+                                          ["videos"]
+                                    }).then(
+                                      (value) {
+                                        ToastMessage().toastmessage(
+                                            message: 'Saved succesfully');
+                                           setState(() {
+                                              favourate == true;
+                                            });
+                                            
+                                      },
+                                    ).onError(
+                                      (error, stackTrace) {
+                                        ToastMessage().toastmessage(
+                                            message: error.toString());
+                                      },
+                                    );
+                                }, icon:  favourate == true
+                                      ? Icon(
+                                          Icons.favorite,
+                                          color: Colors.red,
+                                        )
+                                      : Icon(Icons.favorite_border_outlined)),
+                              IconButton(
+                                  onPressed: () {
+                                    firestorecollection
+                                        .doc(auth.currentUser!.uid.toString())
+                                        .collection("savedcourse")
+                                        .doc(snapshot.data!.docs[widget.index]["id"]
+                                            .toString())
+                                        .set({
+                                       "ischecked":"true",   
+                                      "id": snapshot.data!.docs[widget.index]["id"]
+                                          .toString(),
+                                      "Course name": snapshot
+                                          .data!.docs[widget.index]["Course name"]
+                                          .toString(),
+                                      "Thumnail": snapshot
+                                          .data!.docs[widget.index]["Thumnail"]
+                                          .toString(),
+                                      "rating": snapshot
+                                          .data!.docs[widget.index]["rating"]
+                                          .toString(),
+                                      "name": snapshot
+                                          .data!.docs[widget.index]["name"]
+                                          .toString(),
+                                      "Price": snapshot
+                                          .data!.docs[widget.index]["Price"]
+                                          .toString(),
+                                      "videos": snapshot.data!.docs[widget.index]
+                                          ["videos"]
+                                    }).then(
+                                      (value) {
+                                        ToastMessage().toastmessage(
+                                            message: 'Saved succesfully');
+                                           setState(() {
+                                              saved == true;
+                                            });
+                                            
+                                      },
+                                    ).onError(
+                                      (error, stackTrace) {
+                                        ToastMessage().toastmessage(
+                                            message: error.toString());
+                                      },
+                                    );
+                                    ;
                                   },
-                                ).onError(
-                                  (error, stackTrace) {
-                                    ToastMessage().toastmessage(
-                                        message: error.toString());
-                                  },
-                                );
-                                ;
-                              },
-                              icon: Icon(Icons.bookmark))
+                                  icon: saved == true
+                                      ? Icon(
+                                          Icons.bookmark,
+                                          color: Colors.amber,
+                                        )
+                                      : Icon(Icons.bookmark_outline)),
+                                    
+                            ],
+                          )
                         ],
                       ),
                     ),
@@ -233,6 +343,87 @@ Future<void> checkSaved() async {
                               children: [
                                 Text(
                                   'Start Course!',
+                                  style: GoogleFonts.plusJakartaSans(
+                                    color: Colors.black,
+                                    fontSize: 18.sp,
+                                    fontWeight: FontWeight.w600,
+                                    height: 0,
+                                    letterSpacing: 0.36,
+                                  ),
+                                )
+                              ],
+                            ))),
+                      ),
+                    ),
+                    SizedBox(height: 20.h,),
+                      Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 18),
+                      child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          loading==true;
+                        });
+
+                        firestorecollection
+                                        .doc(auth.currentUser!.uid.toString())
+                                        .collection("cartcourse")
+                                        .doc(snapshot.data!.docs[widget.index]["id"]
+                                            .toString())
+                                        .set({
+                                       "ischecked":"true",   
+                                      "id": snapshot.data!.docs[widget.index]["id"]
+                                          .toString(),
+                                      "Course name": snapshot
+                                          .data!.docs[widget.index]["Course name"]
+                                          .toString(),
+                                      "Thumnail": snapshot
+                                          .data!.docs[widget.index]["Thumnail"]
+                                          .toString(),
+                                      "rating": snapshot
+                                          .data!.docs[widget.index]["rating"]
+                                          .toString(),
+                                      "name": snapshot
+                                          .data!.docs[widget.index]["name"]
+                                          .toString(),
+                                      "Price": snapshot
+                                          .data!.docs[widget.index]["Price"]
+                                          .toString(),
+                                      "videos": snapshot.data!.docs[widget.index]
+                                          ["videos"]
+                                    }).then(
+                                      (value) {
+                                        ToastMessage().toastmessage(
+                                            message: 'Saved succesfully');
+                                         setState(() {
+                                  loading = false;
+                                });
+                                            
+                                      },
+                                    ).onError(
+                                      (error, stackTrace) {
+                                        ToastMessage().toastmessage(
+                                            message: error.toString());
+                                      },
+                                    );
+                      },
+                        child: Container(
+                            width: double.infinity,
+                            height: 57.h,
+                            padding: const EdgeInsets.symmetric(vertical: 17),
+                            decoration: ShapeDecoration(
+                              color: Color(0xD3F8C657),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.r),
+                              ),
+                            ),
+                            child: Center(
+                                child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [loading
+                                ? CircularProgressIndicator()
+                                : 
+                                Text(
+                                  'Add to Cart',
                                   style: GoogleFonts.plusJakartaSans(
                                     color: Colors.black,
                                     fontSize: 18.sp,

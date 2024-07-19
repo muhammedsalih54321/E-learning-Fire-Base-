@@ -293,7 +293,8 @@ class _Sign_upState extends State<Sign_up> {
                               "id": value.user!.uid.toString(),
                               "FullName": name.text.toString(),
                               "email": email.text.toString(),
-                              "Phone": Mobile.text.toString()
+                              "Phone": Mobile.text.toString(),
+                              "Profile":"",
                             });
 
                             setState(() {

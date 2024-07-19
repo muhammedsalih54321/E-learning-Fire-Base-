@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_learning_firebase/Ui/Components/Home%20Container1.dart';
 import 'package:e_learning_firebase/Ui/Components/Home%20Container2.dart';
+import 'package:e_learning_firebase/Ui/Screens/Cart.dart';
+import 'package:e_learning_firebase/Ui/Screens/Favourate.dart';
 import 'package:e_learning_firebase/Ui/Screens/Home/section1/StudentAlso.dart';
 import 'package:e_learning_firebase/Ui/Screens/Home/section2/Topcourses.dart';
 
@@ -51,11 +53,14 @@ class _HomeState extends State<Home> {
           ],
         ),
         actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 10),
-            child:
-                IconButton(onPressed: () {}, icon: Icon(Icons.shopping_cart)),
-          )
+           IconButton(onPressed: () {Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) =>Favourate() ));}, icon: Icon(Icons.favorite)),
+          IconButton(onPressed: () {Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) =>Cart() ));}, icon: Icon(Icons.shopping_cart))
         ],
       ),
       body: Padding(

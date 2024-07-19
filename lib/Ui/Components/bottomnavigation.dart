@@ -1,7 +1,7 @@
 import 'package:e_learning_firebase/Ui/Screens/Chat.dart';
 import 'package:e_learning_firebase/Ui/Screens/Course.dart';
 import 'package:e_learning_firebase/Ui/Screens/Home/Home.dart';
-import 'package:e_learning_firebase/Ui/Screens/Profile.dart';
+import 'package:e_learning_firebase/Ui/Screens/Profile/Profile.dart';
 import 'package:e_learning_firebase/Ui/Screens/Search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
