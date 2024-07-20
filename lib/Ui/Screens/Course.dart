@@ -8,15 +8,13 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class Course extends StatefulWidget {
+class Course extends StatelessWidget {
   const Course({super.key});
 
   @override
-  State<Course> createState() => _CourseState();
-}
-
-final auth = FirebaseAuth.instance;
-final firestore2 = FirebaseFirestore.instance
+  Widget build(BuildContext context) {
+    final auth = FirebaseAuth.instance;
+final courses = FirebaseFirestore.instance
     .collection('Users')
     .doc(auth.currentUser!.uid)
     .collection('savedcourse')
@@ -25,14 +23,10 @@ final ref = FirebaseFirestore.instance
     .collection('Users')
     .doc(auth.currentUser!.uid)
     .collection('savedcourse');
-
-class _CourseState extends State<Course> {
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          automaticallyImplyLeading: false,
+       
           title: Text(
             'Courses',
             style: GoogleFonts.plusJakartaSans(
@@ -43,18 +37,12 @@ class _CourseState extends State<Course> {
               letterSpacing: 0.20,
             ),
           ),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 10),
-              child:
-                  IconButton(onPressed: () {}, icon: Icon(Icons.shopping_cart)),
-            )
-          ],
+         
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 18),
           child: StreamBuilder<QuerySnapshot>(
-              stream: firestore2,
+              stream: courses,
               builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   print('loading');
@@ -255,3 +243,5 @@ class _CourseState extends State<Course> {
         ));
   }
 }
+
+

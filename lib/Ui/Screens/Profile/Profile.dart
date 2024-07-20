@@ -1,5 +1,3 @@
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_learning_firebase/Ui/Components/Profilepagecontainer.dart';
 import 'package:e_learning_firebase/Ui/Components/Toastmessage.dart';
@@ -9,7 +7,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 
 class Profile extends StatefulWidget {
   const Profile({
@@ -23,7 +20,6 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   final firestore1 = FirebaseFirestore.instance.collection('Users').snapshots();
   final auth = FirebaseAuth.instance;
-
 
   int index = 0;
   Future<void> getUser(AsyncSnapshot<QuerySnapshot> snapshot) async {
@@ -71,12 +67,7 @@ class _ProfileState extends State<Profile> {
           ],
         ),
         body: Center(
-            child: Column(
-          children: [
-            SizedBox(
-              height: 35.h,
-            ),
-            StreamBuilder<QuerySnapshot>(
+            child: StreamBuilder<QuerySnapshot>(
                 stream: firestore1,
                 builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (!snapshot.hasData) {
@@ -92,107 +83,106 @@ class _ProfileState extends State<Profile> {
                   if (snapshot.hasData) {
                     getUser(snapshot);
 
-                    return Container(
-                      height: 200.h,
-                      width: double.infinity.w,
-                      child: Column(
-                        children: [
-                          Container(
-                              height: 115.h,
-                              width: 115.w,
-                              decoration: ShapeDecoration(
-                                color: Color(0xFF477B72),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.circular(83.64.r),
-                                ),
-                              ),
-                              child:  Center(
-                                      child: Icon(
-                                        Icons.person,
-                                        color: Colors.white,
-                                      ),
-                                    ),),
-                          SizedBox(
-                            height: 8.h,
-                          ),
-                          Text(
-                            auth.currentUser!.uid.toString() ==
-                                    snapshot.data!.docs[index]["id"].toString()
-                                ? snapshot.data!.docs[index]["FullName"]
-                                    .toString()
-                                : "",
-                            style: GoogleFonts.plusJakartaSans(
-                              color: Color(0xFF202244),
-                              fontSize: 24.sp,
-                              fontWeight: FontWeight.w600,
-                              height: 0,
+                    return Column(
+                      children: [
+                        SizedBox(
+                          height: 35.h,
+                        ),
+                        Container(
+                          height: 115.h,
+                          width: 115.w,
+                          decoration: ShapeDecoration(
+                            color: Color(0xFF477B72),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(83.64.r),
                             ),
                           ),
-                          SizedBox(
-                            height: 5.h,
+                          child: ClipOval(
+                            child:snapshot.hasData?Image.network(
+                            snapshot.data!.docs[index]["Profile"].toString(),
+                            fit: BoxFit.cover,
+                          ):Center(child: Icon(Icons.person),)
+                          )
+                        ),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        Text(
+                   snapshot.data!.docs[index]["id"].toString()== auth.currentUser!.uid.toString()?snapshot.data!.docs[index]["FullName"].toString():'',
+                          style: GoogleFonts.plusJakartaSans(
+                            color: Color(0xFF202244),
+                            fontSize: 24.sp,
+                            fontWeight: FontWeight.w600,
+                            height: 0,
                           ),
-                          Text(
-                            auth.currentUser!.uid.toString() ==
-                                    snapshot.data!.docs[index]["id"].toString()
-                                ? snapshot.data!.docs[index]["email"].toString()
-                                : "",
-                            style: GoogleFonts.plusJakartaSans(
-                              color: Color(0xFF545454),
-                              fontSize: 13.sp,
-                              fontWeight: FontWeight.w700,
-                              height: 0,
-                            ),
+                        ),
+                        SizedBox(
+                          height: 5.h,
+                        ),
+                        Text(
+                          snapshot.data!.docs[index]["id"].toString()== auth.currentUser!.uid.toString()?snapshot.data!.docs[index]["email"].toString():'',
+                          style: GoogleFonts.plusJakartaSans(
+                            color: Color(0xFF545454),
+                            fontSize: 13.sp,
+                            fontWeight: FontWeight.w700,
+                            height: 0,
                           ),
-                        ],
-                      ),
+                        ),
+                        SizedBox(
+                          height: 50.h,
+                        ),
+                        GestureDetector(
+                            onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => Edit(
+                                          name: snapshot.data!.docs[index]
+                                              ["FullName"],
+                                          index: index,
+                                        ))),
+                            child: Profilepagecontainer(name: 'Edit')),
+                        SizedBox(
+                          height: 20.h,
+                        ),
+                        Profilepagecontainer(name: 'Setting'),
+                        SizedBox(
+                          height: 20.h,
+                        ),
+                        Profilepagecontainer(name: 'Achivements'),
+                        SizedBox(
+                          height: 20.h,
+                        ),
+                        Profilepagecontainer(name: 'About Us'),
+                        SizedBox(
+                          height: 20.h,
+                        ),
+                        GestureDetector(
+                            onTap: () {
+                              auth
+                                  .signOut()
+                                  .then(
+                                    (value) => {
+                                      Navigator.of(context).pushAndRemoveUntil(
+                                          MaterialPageRoute(
+                                              builder: (context) => Sign_in()),
+                                          (Route<dynamic> route) => false)
+                                    },
+                                  )
+                                  .onError(
+                                    (error, stackTrace) => ToastMessage()
+                                        .toastmessage(
+                                            message: error.toString()),
+                                  );
+                            },
+                            child: Profilepagecontainer(name: 'Logout')),
+                        SizedBox(
+                          height: 20.h,
+                        ),
+                      ],
                     );
                   } else {
                     return SizedBox();
                   }
-                }),
-            SizedBox(
-              height: 50.h,
-            ),
-            GestureDetector(
-                onTap: () => Navigator.push(
-                    context, MaterialPageRoute(builder: (_) => Edit())),
-                child: Profilepagecontainer(name: 'Edit')),
-            SizedBox(
-              height: 20.h,
-            ),
-            Profilepagecontainer(name: 'Setting'),
-            SizedBox(
-              height: 20.h,
-            ),
-            Profilepagecontainer(name: 'Achivements'),
-            SizedBox(
-              height: 20.h,
-            ),
-            Profilepagecontainer(name: 'About Us'),
-            SizedBox(
-              height: 20.h,
-            ),
-            GestureDetector(
-                onTap: () {
-                  auth
-                      .signOut()
-                      .then(
-                        (value) => {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (_) => Sign_in()))
-                        },
-                      )
-                      .onError(
-                        (error, stackTrace) => ToastMessage()
-                            .toastmessage(message: error.toString()),
-                      );
-                },
-                child: Profilepagecontainer(name: 'Logout')),
-            SizedBox(
-              height: 20.h,
-            ),
-          ],
-        )));
+                })));
   }
 }
