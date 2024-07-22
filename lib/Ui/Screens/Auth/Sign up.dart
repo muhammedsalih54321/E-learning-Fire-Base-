@@ -295,6 +295,7 @@ class _Sign_upState extends State<Sign_up> {
                               "email": email.text.toString(),
                               "Phone": Mobile.text.toString(),
                               "Profile":"",
+                              "Premium":false
                             });
 
                             setState(() {

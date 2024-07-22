@@ -58,13 +58,7 @@ class _ProfileState extends State<Profile> {
               letterSpacing: 0.20,
             ),
           ),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 10),
-              child:
-                  IconButton(onPressed: () {}, icon: Icon(Icons.shopping_cart)),
-            )
-          ],
+          
         ),
         body: Center(
             child: StreamBuilder<QuerySnapshot>(
@@ -89,26 +83,33 @@ class _ProfileState extends State<Profile> {
                           height: 35.h,
                         ),
                         Container(
-                          height: 115.h,
-                          width: 115.w,
-                          decoration: ShapeDecoration(
-                            color: Color(0xFF477B72),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(83.64.r),
+                            height: 115.h,
+                            width: 115.w,
+                            decoration: ShapeDecoration(
+                              color: Color(0xFF477B72),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(83.64.r),
+                              ),
                             ),
-                          ),
-                          child: ClipOval(
-                            child:snapshot.hasData?Image.network(
-                            snapshot.data!.docs[index]["Profile"].toString(),
-                            fit: BoxFit.cover,
-                          ):Center(child: Icon(Icons.person),)
-                          )
-                        ),
+                            child: snapshot.data!.docs[index]["Profile"].isEmpty
+                                ? Center(
+                                    child: Icon(Icons.person),
+                                  )
+                                : ClipOval(
+                                    child: Image.network(
+                                    snapshot.data!.docs[index]["Profile"]
+                                        .toString(),
+                                    fit: BoxFit.cover,
+                                  ))),
                         SizedBox(
                           height: 10.h,
                         ),
                         Text(
-                   snapshot.data!.docs[index]["id"].toString()== auth.currentUser!.uid.toString()?snapshot.data!.docs[index]["FullName"].toString():'',
+                          snapshot.data!.docs[index]["id"].toString() ==
+                                  auth.currentUser!.uid.toString()
+                              ? snapshot.data!.docs[index]["FullName"]
+                                  .toString()
+                              : '',
                           style: GoogleFonts.plusJakartaSans(
                             color: Color(0xFF202244),
                             fontSize: 24.sp,
@@ -120,7 +121,10 @@ class _ProfileState extends State<Profile> {
                           height: 5.h,
                         ),
                         Text(
-                          snapshot.data!.docs[index]["id"].toString()== auth.currentUser!.uid.toString()?snapshot.data!.docs[index]["email"].toString():'',
+                          snapshot.data!.docs[index]["id"].toString() ==
+                                  auth.currentUser!.uid.toString()
+                              ? snapshot.data!.docs[index]["email"].toString()
+                              : '',
                           style: GoogleFonts.plusJakartaSans(
                             color: Color(0xFF545454),
                             fontSize: 13.sp,

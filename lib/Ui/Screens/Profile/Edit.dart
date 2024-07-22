@@ -76,9 +76,6 @@ class _EditState extends State<Edit> {
                       Stack(
                         clipBehavior: Clip.none,
                         children: [
-                          // CircleAvatar(radius: 50.r,backgroundImage: image != null
-                          //       ? Image.file(image!.absolute):
-                          // ),
                           Container(
                               height: 115.h,
                               width: 115.w,

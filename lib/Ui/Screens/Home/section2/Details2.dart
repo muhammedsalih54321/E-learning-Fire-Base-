@@ -7,6 +7,7 @@ import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:video_player/video_player.dart';
 
 class Details2 extends StatefulWidget {
@@ -21,6 +22,7 @@ class _Details2State extends State<Details2> {
   late FlickManager flickManager;
   bool saved = false;
   bool favourate = false;
+   late List<dynamic> videos;
   FirebaseAuth auth = FirebaseAuth.instance;
   final id = DateTime.now().microsecondsSinceEpoch.toString();
   final firestore2 =
@@ -67,6 +69,51 @@ class _Details2State extends State<Details2> {
     super.initState();
   }
 
+  void handlePaymentErrorResponse(PaymentFailureResponse response) {
+    /*
+    * PaymentFailureResponse contains three values:
+    * 1. Error Code
+    * 2. Error Description
+    * 3. Metadata
+    * */
+    showAlertDialog(context, "Payment Failed",
+        "Code: ${response.code}\nDescription: ${response.message}\nMetadata:${response.error.toString()}");
+  }
+
+  void handlePaymentSuccessResponse(PaymentSuccessResponse response) async {
+    firestorecollection
+        .doc(auth.currentUser!.uid.toString())
+        .update({"Premium": true}).then(
+      (value) => {
+        ToastMessage().toastmessage(message: 'Uploaded successfully'),
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (_) => Videolist2(videoUrl: videos)))
+      },
+    );
+    showAlertDialog(
+        context, "Payment Successful", "Payment ID: ${response.paymentId}");
+  }
+
+  void handleExternalWalletSelected(ExternalWalletResponse response) {
+    showAlertDialog(
+        context, "External Wallet Selected", "${response.walletName}");
+  }
+
+  void showAlertDialog(BuildContext context, String title, String message) {
+    // set up the buttons
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(title),
+      content: Text(message),
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
   Future<void> checkSaved(AsyncSnapshot<QuerySnapshot> snapshot) async {
     final firestoreCollection = FirebaseFirestore.instance.collection('Users');
     final userDoc = firestoreCollection.doc(auth.currentUser!.uid);
@@ -143,7 +190,7 @@ class _Details2State extends State<Details2> {
                         .toString());
                 checkSaved(snapshot);
                 checkFavourate(snapshot);
-
+                videos = snapshot.data!.docs[widget.index]['videos'];
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -188,7 +235,7 @@ class _Details2State extends State<Details2> {
                                         .doc(snapshot.data!.docs[widget.index]["id"]
                                             .toString())
                                         .set({
-                                       "ischecked":"true",   
+                                       "ischecked":"false",   
                                       "id": snapshot.data!.docs[widget.index]["id"]
                                           .toString(),
                                       "Course name": snapshot
@@ -323,13 +370,35 @@ class _Details2State extends State<Details2> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 18),
                       child: GestureDetector(
-                        onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => Videolist2(
-                                      videoUrl: snapshot
-                                          .data!.docs[widget.index]['videos'],
-                                    ))),
+                        onTap: () { Razorpay razorpay = Razorpay();
+                                        var options = {
+                                          'key': 'rzp_test_gKANZdsNdLqaQs',
+                                          'amount': 100,
+                                          'name': 'Acme Corp.',
+                                          'description': 'Fine T-Shirt',
+                                          'retry': {
+                                            'enabled': true,
+                                            'max_count': 1
+                                          },
+                                          'send_sms_hash': true,
+                                          'prefill': {
+                                            'contact': '8888888888',
+                                            'email': 'test@razorpay.com'
+                                          },
+                                          'external': {
+                                            'wallets': ['paytm']
+                                          }
+                                        };
+                                        razorpay.on(
+                                            Razorpay.EVENT_PAYMENT_ERROR,
+                                            handlePaymentErrorResponse);
+                                        razorpay.on(
+                                            Razorpay.EVENT_PAYMENT_SUCCESS,
+                                            handlePaymentSuccessResponse);
+                                        razorpay.on(
+                                            Razorpay.EVENT_EXTERNAL_WALLET,
+                                            handleExternalWalletSelected);
+                                        razorpay.open(options);},
                         child: Container(
                             width: double.infinity,
                             height: 57.h,
@@ -369,7 +438,7 @@ class _Details2State extends State<Details2> {
                                         .doc(snapshot.data!.docs[widget.index]["id"]
                                             .toString())
                                         .set({
-                                       "ischecked":"true",   
+                                       "ischecked":"false",   
                                       "id": snapshot.data!.docs[widget.index]["id"]
                                           .toString(),
                                       "Course name": snapshot
