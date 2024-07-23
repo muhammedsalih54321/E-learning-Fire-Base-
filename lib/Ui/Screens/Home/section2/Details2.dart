@@ -22,7 +22,7 @@ class _Details2State extends State<Details2> {
   late FlickManager flickManager;
   bool saved = false;
   bool favourate = false;
-   late List<dynamic> videos;
+  late List<dynamic> videos;
   FirebaseAuth auth = FirebaseAuth.instance;
   final id = DateTime.now().microsecondsSinceEpoch.toString();
   final firestore2 =
@@ -114,6 +114,7 @@ class _Details2State extends State<Details2> {
       },
     );
   }
+
   Future<void> checkSaved(AsyncSnapshot<QuerySnapshot> snapshot) async {
     final firestoreCollection = FirebaseFirestore.instance.collection('Users');
     final userDoc = firestoreCollection.doc(auth.currentUser!.uid);
@@ -139,7 +140,8 @@ class _Details2State extends State<Details2> {
       }
     }
   }
-   Future<void> checkFavourate(AsyncSnapshot<QuerySnapshot> snapshot) async {
+
+  Future<void> checkFavourate(AsyncSnapshot<QuerySnapshot> snapshot) async {
     final firestoreCollection = FirebaseFirestore.instance.collection('Users');
     final userDoc = firestoreCollection.doc(auth.currentUser!.uid);
 
@@ -214,32 +216,34 @@ class _Details2State extends State<Details2> {
                             height: 58.h,
                             width: 230.w,
                             child: Text(
-                              snapshot
-                                  .data!.docs[widget.index]['videos'][0]['title']
+                              snapshot.data!
+                                  .docs[widget.index]['videos'][0]['title']
                                   .toString(),
                               style: GoogleFonts.plusJakartaSans(
                                 color: Color(0xFF1D1B20),
                                 fontSize: 24.sp,
                                 fontWeight: FontWeight.w700,
-                              
                                 letterSpacing: 0.18,
                               ),
                             ),
                           ),
-                         Wrap(
+                          Wrap(
                             children: [
-                                 IconButton(onPressed: (){
+                              IconButton(
+                                  onPressed: () {
                                     firestorecollection
                                         .doc(auth.currentUser!.uid.toString())
                                         .collection("favouratecourse")
-                                        .doc(snapshot.data!.docs[widget.index]["id"]
+                                        .doc(snapshot
+                                            .data!.docs[widget.index]["id"]
                                             .toString())
                                         .set({
-                                       "ischecked":"false",   
-                                      "id": snapshot.data!.docs[widget.index]["id"]
+                                      "ischecked": "false",
+                                      "id": snapshot
+                                          .data!.docs[widget.index]["id"]
                                           .toString(),
-                                      "Course name": snapshot
-                                          .data!.docs[widget.index]["Course name"]
+                                      "Course name": snapshot.data!
+                                          .docs[widget.index]["Course name"]
                                           .toString(),
                                       "Thumnail": snapshot
                                           .data!.docs[widget.index]["Thumnail"]
@@ -253,16 +257,15 @@ class _Details2State extends State<Details2> {
                                       "Price": snapshot
                                           .data!.docs[widget.index]["Price"]
                                           .toString(),
-                                      "videos": snapshot.data!.docs[widget.index]
-                                          ["videos"]
+                                      "videos": snapshot
+                                          .data!.docs[widget.index]["videos"]
                                     }).then(
                                       (value) {
                                         ToastMessage().toastmessage(
                                             message: 'Saved succesfully');
-                                           setState(() {
-                                              favourate == true;
-                                            });
-                                            
+                                        setState(() {
+                                          favourate == true;
+                                        });
                                       },
                                     ).onError(
                                       (error, stackTrace) {
@@ -270,7 +273,8 @@ class _Details2State extends State<Details2> {
                                             message: error.toString());
                                       },
                                     );
-                                }, icon:  favourate == true
+                                  },
+                                  icon: favourate == true
                                       ? Icon(
                                           Icons.favorite,
                                           color: Colors.red,
@@ -281,14 +285,16 @@ class _Details2State extends State<Details2> {
                                     firestorecollection
                                         .doc(auth.currentUser!.uid.toString())
                                         .collection("savedcourse")
-                                        .doc(snapshot.data!.docs[widget.index]["id"]
+                                        .doc(snapshot
+                                            .data!.docs[widget.index]["id"]
                                             .toString())
                                         .set({
-                                        "ischecked":"false", 
-                                      "id": snapshot.data!.docs[widget.index]["id"]
+                                      "ischecked": "false",
+                                      "id": snapshot
+                                          .data!.docs[widget.index]["id"]
                                           .toString(),
-                                      "Course name": snapshot
-                                          .data!.docs[widget.index]["Course name"]
+                                      "Course name": snapshot.data!
+                                          .docs[widget.index]["Course name"]
                                           .toString(),
                                       "Thumnail": snapshot
                                           .data!.docs[widget.index]["Thumnail"]
@@ -302,17 +308,15 @@ class _Details2State extends State<Details2> {
                                       "Price": snapshot
                                           .data!.docs[widget.index]["Price"]
                                           .toString(),
-                                      "videos": snapshot.data!.docs[widget.index]
-                                          ["videos"]
+                                      "videos": snapshot
+                                          .data!.docs[widget.index]["videos"]
                                     }).then(
                                       (value) {
                                         ToastMessage().toastmessage(
                                             message: 'Saved succesfully');
-                                            setState(() {
-                                              saved == true;
-                                            });
-                                            
-                                     
+                                        setState(() {
+                                          saved == true;
+                                        });
                                       },
                                     ).onError(
                                       (error, stackTrace) {
@@ -370,35 +374,141 @@ class _Details2State extends State<Details2> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 18),
                       child: GestureDetector(
-                        onTap: () { Razorpay razorpay = Razorpay();
-                                        var options = {
-                                          'key': 'rzp_test_gKANZdsNdLqaQs',
-                                          'amount': 100,
-                                          'name': 'Acme Corp.',
-                                          'description': 'Fine T-Shirt',
-                                          'retry': {
-                                            'enabled': true,
-                                            'max_count': 1
-                                          },
-                                          'send_sms_hash': true,
-                                          'prefill': {
-                                            'contact': '8888888888',
-                                            'email': 'test@razorpay.com'
-                                          },
-                                          'external': {
-                                            'wallets': ['paytm']
-                                          }
-                                        };
-                                        razorpay.on(
-                                            Razorpay.EVENT_PAYMENT_ERROR,
-                                            handlePaymentErrorResponse);
-                                        razorpay.on(
-                                            Razorpay.EVENT_PAYMENT_SUCCESS,
-                                            handlePaymentSuccessResponse);
-                                        razorpay.on(
-                                            Razorpay.EVENT_EXTERNAL_WALLET,
-                                            handleExternalWalletSelected);
-                                        razorpay.open(options);},
+                        onTap: () async {
+                          final firestoreCollections = FirebaseFirestore
+                              .instance
+                              .collection('Users')
+                              .doc(auth.currentUser!.uid.toString());
+
+                          DocumentSnapshot<Map<String, dynamic>> querySnapshot =
+                              await firestoreCollections.get();
+
+                          if (querySnapshot['Premium'] == false) {
+                            showModalBottomSheet(
+                              isScrollControlled: true,
+                              backgroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(30.r),
+                                      topRight: Radius.circular(30.r))),
+                              context: context,
+                              builder: (context) {
+                                return Container(
+                                  width: double.infinity.w,
+                                  height: 300.h,
+                                  child: Column(
+                                    children: [
+                                      SizedBox(
+                                        height: 15..h,
+                                      ),
+                                      Icon(
+                                        Icons.star_rounded,
+                                        color: Colors.amber,
+                                        size: 70.sp,
+                                      ),
+                                      SizedBox(
+                                        height: 15..h,
+                                      ),
+                                      Text(
+                                        'Unlock Premium Access',
+                                        style: GoogleFonts.plusJakartaSans(
+                                          color: Colors.black,
+                                          fontSize: 23.sp,
+                                          fontWeight: FontWeight.w700,
+                                          height: 0.06,
+                                          letterSpacing: 0.18,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 18.h,
+                                      ),
+                                      Text(
+                                        textAlign: TextAlign.center,
+                                        'Subscribe for Rs.100 and get access to All courses\n and E-Books. Enjoy additional features like refer\n and earn money.',
+                                        style: GoogleFonts.plusJakartaSans(
+                                          color:
+                                              Color.fromARGB(255, 48, 47, 51),
+                                          fontSize: 13.sp,
+                                          fontWeight: FontWeight.w700,
+                                          letterSpacing: 0.18,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 25.h,
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          Razorpay razorpay = Razorpay();
+                                          var options = {
+                                            'key': 'rzp_test_gKANZdsNdLqaQs',
+                                            'amount': 100,
+                                            'name': 'Acme Corp.',
+                                            'description': 'Fine T-Shirt',
+                                            'retry': {
+                                              'enabled': true,
+                                              'max_count': 1
+                                            },
+                                            'send_sms_hash': true,
+                                            'prefill': {
+                                              'contact': '8888888888',
+                                              'email': 'test@razorpay.com'
+                                            },
+                                            'external': {
+                                              'wallets': ['paytm']
+                                            }
+                                          };
+                                          razorpay.on(
+                                              Razorpay.EVENT_PAYMENT_ERROR,
+                                              handlePaymentErrorResponse);
+                                          razorpay.on(
+                                              Razorpay.EVENT_PAYMENT_SUCCESS,
+                                              handlePaymentSuccessResponse);
+                                          razorpay.on(
+                                              Razorpay.EVENT_EXTERNAL_WALLET,
+                                              handleExternalWalletSelected);
+                                          razorpay.open(options);
+                                        },
+                                        child: Container(
+                                          width: 250,
+                                          height: 57.h,
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 17),
+                                          decoration: ShapeDecoration(
+                                            color: Color(0xD3F8C657),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.r),
+                                            ),
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              'Subscribe for Rs. 100',
+                                              style:
+                                                  GoogleFonts.plusJakartaSans(
+                                                color: Colors.black,
+                                                fontSize: 18.sp,
+                                                fontWeight: FontWeight.w600,
+                                                height: 0,
+                                                letterSpacing: 0.36,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                );
+                              },
+                            );
+                          }
+
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => Videolist2(
+                                      videoUrl: snapshot.data!
+                                          .docs[widget.index]['videos'])));
+                        },
                         child: Container(
                             width: double.infinity,
                             height: 57.h,
@@ -427,50 +537,48 @@ class _Details2State extends State<Details2> {
                             ))),
                       ),
                     ),
-                     SizedBox(height: 20.h,),
-                      Padding(
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 18),
                       child: GestureDetector(
                         onTap: () {
-                           firestorecollection
-                                        .doc(auth.currentUser!.uid.toString())
-                                        .collection("cartcourse")
-                                        .doc(snapshot.data!.docs[widget.index]["id"]
-                                            .toString())
-                                        .set({
-                                       "ischecked":"false",   
-                                      "id": snapshot.data!.docs[widget.index]["id"]
-                                          .toString(),
-                                      "Course name": snapshot
-                                          .data!.docs[widget.index]["Course name"]
-                                          .toString(),
-                                      "Thumnail": snapshot
-                                          .data!.docs[widget.index]["Thumnail"]
-                                          .toString(),
-                                      "rating": snapshot
-                                          .data!.docs[widget.index]["rating"]
-                                          .toString(),
-                                      "name": snapshot
-                                          .data!.docs[widget.index]["name"]
-                                          .toString(),
-                                      "Price": snapshot
-                                          .data!.docs[widget.index]["Price"]
-                                          .toString(),
-                                      "videos": snapshot.data!.docs[widget.index]
-                                          ["videos"]
-                                    }).then(
-                                      (value) {
-                                        ToastMessage().toastmessage(
-                                            message: 'Saved succesfully');
-                                       
-                                            
-                                      },
-                                    ).onError(
-                                      (error, stackTrace) {
-                                        ToastMessage().toastmessage(
-                                            message: error.toString());
-                                      },
-                                    );
+                          firestorecollection
+                              .doc(auth.currentUser!.uid.toString())
+                              .collection("cartcourse")
+                              .doc(snapshot.data!.docs[widget.index]["id"]
+                                  .toString())
+                              .set({
+                            "ischecked": "false",
+                            "id": snapshot.data!.docs[widget.index]["id"]
+                                .toString(),
+                            "Course name": snapshot
+                                .data!.docs[widget.index]["Course name"]
+                                .toString(),
+                            "Thumnail": snapshot
+                                .data!.docs[widget.index]["Thumnail"]
+                                .toString(),
+                            "rating": snapshot
+                                .data!.docs[widget.index]["rating"]
+                                .toString(),
+                            "name": snapshot.data!.docs[widget.index]["name"]
+                                .toString(),
+                            "Price": snapshot.data!.docs[widget.index]["Price"]
+                                .toString(),
+                            "videos": snapshot.data!.docs[widget.index]
+                                ["videos"]
+                          }).then(
+                            (value) {
+                              ToastMessage()
+                                  .toastmessage(message: 'Saved succesfully');
+                            },
+                          ).onError(
+                            (error, stackTrace) {
+                              ToastMessage()
+                                  .toastmessage(message: error.toString());
+                            },
+                          );
                         },
                         child: Container(
                             width: double.infinity,

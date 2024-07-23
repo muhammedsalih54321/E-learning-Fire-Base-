@@ -21,7 +21,7 @@ class _BottomnavigationState extends State<Bottomnavigation> {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: Container(
-        height: 69.h,
+        height: 71.h,
         width: double.infinity,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.only(

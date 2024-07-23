@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_learning_firebase/Ui/Components/Home%20Container1.dart';
 import 'package:e_learning_firebase/Ui/Components/Home%20Container2.dart';
 import 'package:e_learning_firebase/Ui/Screens/Cart.dart';
+import 'package:e_learning_firebase/Ui/Screens/Categories.dart';
+
 import 'package:e_learning_firebase/Ui/Screens/Favourate.dart';
 import 'package:e_learning_firebase/Ui/Screens/Home/section1/StudentAlso.dart';
 import 'package:e_learning_firebase/Ui/Screens/Home/section2/Topcourses.dart';
@@ -53,14 +55,18 @@ class _HomeState extends State<Home> {
           ],
         ),
         actions: [
-           IconButton(onPressed: () {Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) =>Favourate() ));}, icon: Icon(Icons.favorite)),
-          IconButton(onPressed: () {Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) =>Cart() ));}, icon: Icon(Icons.shopping_cart))
+          IconButton(
+              onPressed: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (_) => Favourate()));
+              },
+              icon: Icon(Icons.favorite)),
+          IconButton(
+              onPressed: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (_) => Cart()));
+              },
+              icon: Icon(Icons.shopping_cart))
         ],
       ),
       body: Padding(
@@ -68,9 +74,6 @@ class _HomeState extends State<Home> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(
-                height: 20.h,
-              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -84,20 +87,23 @@ class _HomeState extends State<Home> {
                       letterSpacing: 0.18,
                     ),
                   ),
-                  Text(
-                    'See All',
-                    style: GoogleFonts.plusJakartaSans(
-                      color: Colors.black,
-                      fontSize: 13.sp,
-                      fontWeight: FontWeight.w600,
-                      height: 0.06,
-                      letterSpacing: 0.18,
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (_) => Categories()));
+                    },
+                    child: Text(
+                      'See All',
+                      style: GoogleFonts.plusJakartaSans(
+                        color: Colors.black,
+                        fontSize: 13.sp,
+                        fontWeight: FontWeight.w600,
+                        height: 0.06,
+                        letterSpacing: 0.18,
+                      ),
                     ),
-                  ),
+                  )
                 ],
-              ),
-              SizedBox(
-                height: 30.h,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -143,7 +149,7 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                   Container(
-                    width: 178.w,
+                    width: 177.w,
                     height: 37.h,
                     decoration: ShapeDecoration(
                         color: Color(0xFFC6D6D3),
@@ -180,18 +186,22 @@ class _HomeState extends State<Home> {
                       letterSpacing: 0.18,
                     ),
                   ),
-                  TextButton(onPressed: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (_)=>Studentalso()));
-                  }, child: Text(
-                    'See All',
-                    style: GoogleFonts.plusJakartaSans(
-                      color: Colors.black,
-                      fontSize: 13.sp,
-                      fontWeight: FontWeight.w600,
-                      height: 0.06,
-                      letterSpacing: 0.18,
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (_) => Studentalso()));
+                    },
+                    child: Text(
+                      'See All',
+                      style: GoogleFonts.plusJakartaSans(
+                        color: Colors.black,
+                        fontSize: 13.sp,
+                        fontWeight: FontWeight.w600,
+                        height: 0.06,
+                        letterSpacing: 0.18,
+                      ),
                     ),
-                  ),)
+                  )
                 ],
               ),
               SizedBox(
@@ -222,18 +232,22 @@ class _HomeState extends State<Home> {
                                 return Padding(
                                   padding: const EdgeInsets.only(right: 30),
                                   child: Home_container1(
-                                      img: snapshot.data!.docs[index]["Thumnail"]
-                                          .toString(),
-                                      rating: snapshot.data!.docs[index]["rating"]
-                                          .toString(),
-                                      Coursename: snapshot
-                                          .data!.docs[index]["Course name"]
-                                          .toString(),
-                                      name: snapshot.data!.docs[index]["name"]
-                                          .toString(),
-                                      Price: snapshot.data!.docs[index]["Price"]
-                                          .toString(), star: double.parse(snapshot.data!.docs[index]["rating"]
-                                          .toString()), index: index,),
+                                    img: snapshot.data!.docs[index]["Thumnail"]
+                                        .toString(),
+                                    rating: snapshot.data!.docs[index]["rating"]
+                                        .toString(),
+                                    Coursename: snapshot
+                                        .data!.docs[index]["Course name"]
+                                        .toString(),
+                                    name: snapshot.data!.docs[index]["name"]
+                                        .toString(),
+                                    Price: snapshot.data!.docs[index]["Price"]
+                                        .toString(),
+                                    star: double.parse(snapshot
+                                        .data!.docs[index]["rating"]
+                                        .toString()),
+                                    index: index,
+                                  ),
                                 );
                               },
                             );
@@ -258,18 +272,22 @@ class _HomeState extends State<Home> {
                       letterSpacing: 0.18,
                     ),
                   ),
-                 TextButton(onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (_)=>Topcourses()));
-                 }, child: Text(
-                    'See All',
-                    style: GoogleFonts.plusJakartaSans(
-                      color: Colors.black,
-                      fontSize: 13.sp,
-                      fontWeight: FontWeight.w600,
-                      height: 0.06,
-                      letterSpacing: 0.18,
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (_) => Topcourses()));
+                    },
+                    child: Text(
+                      'See All',
+                      style: GoogleFonts.plusJakartaSans(
+                        color: Colors.black,
+                        fontSize: 13.sp,
+                        fontWeight: FontWeight.w600,
+                        height: 0.06,
+                        letterSpacing: 0.18,
+                      ),
                     ),
-                  ),)
+                  )
                 ],
               ),
               SizedBox(
@@ -300,18 +318,22 @@ class _HomeState extends State<Home> {
                                 return Padding(
                                   padding: const EdgeInsets.only(right: 30),
                                   child: Home_container2(
-                                      img: snapshot.data!.docs[index]["Thumnail"]
-                                          .toString(),
-                                      rating: snapshot.data!.docs[index]["rating"]
-                                          .toString(),
-                                      Coursename: snapshot
-                                          .data!.docs[index]["Course name"]
-                                          .toString(),
-                                      name: snapshot.data!.docs[index]["name"]
-                                          .toString(),
-                                      Price: snapshot.data!.docs[index]["Price"]
-                                          .toString(), star:  double.parse(snapshot.data!.docs[index]["rating"]
-                                          .toString()), index: index,),
+                                    img: snapshot.data!.docs[index]["Thumnail"]
+                                        .toString(),
+                                    rating: snapshot.data!.docs[index]["rating"]
+                                        .toString(),
+                                    Coursename: snapshot
+                                        .data!.docs[index]["Course name"]
+                                        .toString(),
+                                    name: snapshot.data!.docs[index]["name"]
+                                        .toString(),
+                                    Price: snapshot.data!.docs[index]["Price"]
+                                        .toString(),
+                                    star: double.parse(snapshot
+                                        .data!.docs[index]["rating"]
+                                        .toString()),
+                                    index: index,
+                                  ),
                                 );
                               },
                             );

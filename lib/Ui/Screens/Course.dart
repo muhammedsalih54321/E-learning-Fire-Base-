@@ -84,7 +84,7 @@ final ref = FirebaseFirestore.instance
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2,
-                                  childAspectRatio: 320 / 400,
+                                  childAspectRatio: 299 / 400,
                                   crossAxisSpacing: 6,
                                   mainAxisSpacing: 10),
                           itemBuilder: (context, index) {

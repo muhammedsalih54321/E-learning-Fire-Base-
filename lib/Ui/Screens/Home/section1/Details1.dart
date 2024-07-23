@@ -21,6 +21,7 @@ class Details1 extends StatefulWidget {
 
 class _DetailsState extends State<Details1> {
   late FlickManager flickManager;
+
   bool loading = false;
   final firestore1 =
       FirebaseFirestore.instance.collection('StudentAlsoSearch').snapshots();
@@ -376,121 +377,139 @@ class _DetailsState extends State<Details1> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 18),
                       child: GestureDetector(
-                        onTap: () {
-                          showModalBottomSheet(
-                            isScrollControlled: true,
-                            backgroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(30.r),
-                                    topRight: Radius.circular(30.r))),
-                            context: context,
-                            builder: (context) {
-                              return Container(
-                                width: double.infinity.w,
-                                height: 300.h,
-                                child: Column(
-                                  children: [
-                                    SizedBox(
-                                      height: 15..h,
-                                    ),
-                                    Icon(
-                                      Icons.star_rounded,
-                                      color: Colors.amber,
-                                      size: 70.sp,
-                                    ),
-                                    SizedBox(
-                                      height: 15..h,
-                                    ),
-                                    Text(
-                                      'Unlock Premium Access',
-                                      style: GoogleFonts.plusJakartaSans(
-                                        color: Colors.black,
-                                        fontSize: 23.sp,
-                                        fontWeight: FontWeight.w700,
-                                        height: 0.06,
-                                        letterSpacing: 0.18,
+                        onTap: () async {
+                          final firestoreCollections =
+                              FirebaseFirestore.instance.collection('Users').doc(auth.currentUser!.uid.toString());
+                  
+                          DocumentSnapshot<Map<String, dynamic>> querySnapshot =
+                              await firestoreCollections.get();
+
+                       
+                          if (querySnapshot['Premium'] ==false) {
+                            showModalBottomSheet(
+                              isScrollControlled: true,
+                              backgroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(30.r),
+                                      topRight: Radius.circular(30.r))),
+                              context: context,
+                              builder: (context) {
+                                return Container(
+                                  width: double.infinity.w,
+                                  height: 300.h,
+                                  child: Column(
+                                    children: [
+                                      SizedBox(
+                                        height: 15..h,
                                       ),
-                                    ),
-                                    SizedBox(
-                                      height: 18.h,
-                                    ),
-                                    Text(
-                                      textAlign: TextAlign.center,
-                                      'Subscribe for Rs.100 and get access to All courses\n and E-Books. Enjoy additional features like refer\n and earn money.',
-                                      style: GoogleFonts.plusJakartaSans(
-                                        color: Color.fromARGB(255, 48, 47, 51),
-                                        fontSize: 13.sp,
-                                        fontWeight: FontWeight.w700,
-                                        letterSpacing: 0.18,
+                                      Icon(
+                                        Icons.star_rounded,
+                                        color: Colors.amber,
+                                        size: 70.sp,
                                       ),
-                                    ),
-                                    SizedBox(
-                                      height: 25.h,
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        Razorpay razorpay = Razorpay();
-                                        var options = {
-                                          'key': 'rzp_test_gKANZdsNdLqaQs',
-                                          'amount': 100,
-                                          'name': 'Acme Corp.',
-                                          'description': 'Fine T-Shirt',
-                                          'retry': {
-                                            'enabled': true,
-                                            'max_count': 1
-                                          },
-                                          'send_sms_hash': true,
-                                          'prefill': {
-                                            'contact': '8888888888',
-                                            'email': 'test@razorpay.com'
-                                          },
-                                          'external': {
-                                            'wallets': ['paytm']
-                                          }
-                                        };
-                                        razorpay.on(
-                                            Razorpay.EVENT_PAYMENT_ERROR,
-                                            handlePaymentErrorResponse);
-                                        razorpay.on(
-                                            Razorpay.EVENT_PAYMENT_SUCCESS,
-                                            handlePaymentSuccessResponse);
-                                        razorpay.on(
-                                            Razorpay.EVENT_EXTERNAL_WALLET,
-                                            handleExternalWalletSelected);
-                                        razorpay.open(options);
-                                      },
-                                      child: Container(
-                                        width: 250,
-                                        height: 57.h,
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 17),
-                                        decoration: ShapeDecoration(
-                                          color: Color(0xD3F8C657),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10.r),
-                                          ),
+                                      SizedBox(
+                                        height: 15..h,
+                                      ),
+                                      Text(
+                                        'Unlock Premium Access',
+                                        style: GoogleFonts.plusJakartaSans(
+                                          color: Colors.black,
+                                          fontSize: 23.sp,
+                                          fontWeight: FontWeight.w700,
+                                          height: 0.06,
+                                          letterSpacing: 0.18,
                                         ),
-                                        child: Center(
-                                          child: Text(
-                                            'Subscribe for Rs. 100',
-                                            style: GoogleFonts.plusJakartaSans(
-                                              color: Colors.black,
-                                              fontSize: 18.sp,
-                                              fontWeight: FontWeight.w600,
-                                              height: 0,
-                                              letterSpacing: 0.36,
+                                      ),
+                                      SizedBox(
+                                        height: 18.h,
+                                      ),
+                                      Text(
+                                        textAlign: TextAlign.center,
+                                        'Subscribe for Rs.100 and get access to All courses\n and E-Books. Enjoy additional features like refer\n and earn money.',
+                                        style: GoogleFonts.plusJakartaSans(
+                                          color:
+                                              Color.fromARGB(255, 48, 47, 51),
+                                          fontSize: 13.sp,
+                                          fontWeight: FontWeight.w700,
+                                          letterSpacing: 0.18,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 25.h,
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          Razorpay razorpay = Razorpay();
+                                          var options = {
+                                            'key': 'rzp_test_gKANZdsNdLqaQs',
+                                            'amount': 100,
+                                            'name': 'Acme Corp.',
+                                            'description': 'Fine T-Shirt',
+                                            'retry': {
+                                              'enabled': true,
+                                              'max_count': 1
+                                            },
+                                            'send_sms_hash': true,
+                                            'prefill': {
+                                              'contact': '8888888888',
+                                              'email': 'test@razorpay.com'
+                                            },
+                                            'external': {
+                                              'wallets': ['paytm']
+                                            }
+                                          };
+                                          razorpay.on(
+                                              Razorpay.EVENT_PAYMENT_ERROR,
+                                              handlePaymentErrorResponse);
+                                          razorpay.on(
+                                              Razorpay.EVENT_PAYMENT_SUCCESS,
+                                              handlePaymentSuccessResponse);
+                                          razorpay.on(
+                                              Razorpay.EVENT_EXTERNAL_WALLET,
+                                              handleExternalWalletSelected);
+                                          razorpay.open(options);
+                                        },
+                                        child: Container(
+                                          width: 250,
+                                          height: 57.h,
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 17),
+                                          decoration: ShapeDecoration(
+                                            color: Color(0xD3F8C657),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.r),
+                                            ),
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              'Subscribe for Rs. 100',
+                                              style:
+                                                  GoogleFonts.plusJakartaSans(
+                                                color: Colors.black,
+                                                fontSize: 18.sp,
+                                                fontWeight: FontWeight.w600,
+                                                height: 0,
+                                                letterSpacing: 0.36,
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              );
-                            },
-                          );
+                                      )
+                                    ],
+                                  ),
+                                );
+                              },
+                            );
+                          }
+
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => Videolist2(
+                                      videoUrl: snapshot.data!
+                                          .docs[widget.index]['videos'])));
                         },
                         // onTap: () => Navigator.push(
                         //     context,
