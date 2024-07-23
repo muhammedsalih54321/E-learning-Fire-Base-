@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_learning_firebase/Ui/Components/Home%20Container1.dart';
 import 'package:e_learning_firebase/Ui/Components/Home%20Container2.dart';
 import 'package:e_learning_firebase/Ui/Screens/Cart.dart';
-import 'package:e_learning_firebase/Ui/Screens/Categories.dart';
+import 'package:e_learning_firebase/Ui/Screens/Home/Categories/Categories.dart';
 
 import 'package:e_learning_firebase/Ui/Screens/Favourate.dart';
 import 'package:e_learning_firebase/Ui/Screens/Home/section1/StudentAlso.dart';
