@@ -1,12 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_learning_firebase/Ui/Components/Home%20Container1.dart';
-import 'package:e_learning_firebase/Ui/Components/Home%20Container2.dart';
+
 import 'package:e_learning_firebase/Ui/Screens/Cart.dart';
-import 'package:e_learning_firebase/Ui/Screens/Home/Categories/Categories.dart';
+import 'package:e_learning_firebase/Ui/Screens/Home/Categories.dart';
+
 
 import 'package:e_learning_firebase/Ui/Screens/Favourate.dart';
-import 'package:e_learning_firebase/Ui/Screens/Home/section1/StudentAlso.dart';
-import 'package:e_learning_firebase/Ui/Screens/Home/section2/Topcourses.dart';
+import 'package:e_learning_firebase/Ui/Screens/Home/StudentAlso.dart';
+import 'package:e_learning_firebase/Ui/Screens/Home/Topcourses.dart';
 
 import 'package:flutter/material.dart';
 
@@ -246,7 +247,9 @@ class _HomeState extends State<Home> {
                                     star: double.parse(snapshot
                                         .data!.docs[index]["rating"]
                                         .toString()),
-                                    index: index,
+                                    index: index, videoUrl: snapshot.data!
+                                          .docs[index]['videos'], id: snapshot.data!.docs[index]["id"]
+                                            .toString(),
                                   ),
                                 );
                               },
@@ -317,7 +320,7 @@ class _HomeState extends State<Home> {
                               itemBuilder: (BuildContext context, int index) {
                                 return Padding(
                                   padding: const EdgeInsets.only(right: 30),
-                                  child: Home_container2(
+                                  child: Home_container1(
                                     img: snapshot.data!.docs[index]["Thumnail"]
                                         .toString(),
                                     rating: snapshot.data!.docs[index]["rating"]
@@ -332,7 +335,9 @@ class _HomeState extends State<Home> {
                                     star: double.parse(snapshot
                                         .data!.docs[index]["rating"]
                                         .toString()),
-                                    index: index,
+                                    index: index, videoUrl: snapshot.data!
+                                          .docs[index]['videos'], id: snapshot.data!.docs[index]["id"]
+                                            .toString(),
                                   ),
                                 );
                               },

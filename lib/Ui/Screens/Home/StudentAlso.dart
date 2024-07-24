@@ -30,7 +30,7 @@ class _StudentalsoState extends State<Studentalso> {
           ),
         ),
         body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal:18),
+          padding: const EdgeInsets.symmetric(horizontal: 18),
           child: StreamBuilder<QuerySnapshot>(
               stream: firestore1,
               builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -52,25 +52,28 @@ class _StudentalsoState extends State<Studentalso> {
                           childAspectRatio: 320 / 400,
                           crossAxisSpacing: 6,
                           mainAxisSpacing: 10),
-                      itemBuilder: (context, index) { 
-                           return  Padding(
-                             padding: const EdgeInsets.symmetric(horizontal: 5),
-                             child: Home_container1(
-                              
-                                        img: snapshot.data!.docs[index]["Thumnail"]
-                                            .toString(),
-                                        rating: snapshot.data!.docs[index]["rating"]
-                                            .toString(),
-                                        Coursename: snapshot
-                                            .data!.docs[index]["Course name"]
-                                            .toString(),
-                                        name: snapshot.data!.docs[index]["name"]
-                                            .toString(),
-                                        Price: snapshot.data!.docs[index]["Price"]
-                                            .toString(), star: double.parse(snapshot.data!.docs[index]["rating"]
-                                            .toString()), index: index,),
-                           );
-          
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: Home_container1(
+                            img: snapshot.data!.docs[index]["Thumnail"]
+                                .toString(),
+                            rating:
+                                snapshot.data!.docs[index]["rating"].toString(),
+                            Coursename: snapshot
+                                .data!.docs[index]["Course name"]
+                                .toString(),
+                            name: snapshot.data!.docs[index]["name"].toString(),
+                            Price:
+                                snapshot.data!.docs[index]["Price"].toString(),
+                            star: double.parse(snapshot
+                                .data!.docs[index]["rating"]
+                                .toString()),
+                            index: index,
+                            videoUrl: snapshot.data!.docs[index]["videos"],
+                            id: snapshot.data!.docs[index]["id"].toString(),
+                          ),
+                        );
                       });
                 } else {
                   return SizedBox();

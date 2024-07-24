@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:e_learning_firebase/Ui/Screens/Home/section1/Details1.dart';
-import 'package:e_learning_firebase/Ui/Screens/Home/section2/Details2.dart';
+import 'package:e_learning_firebase/Ui/Screens/Home/Details1.dart';
+
+
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Course extends StatelessWidget {
+
   const Course({super.key});
 
   @override
@@ -92,20 +94,36 @@ final ref = FirebaseFirestore.instance
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 5),
                                 child: GestureDetector(
-                                  onTap: () => snapshot
-                                              .data!.docs[index]["ischecked"]
-                                              .toString() ==
-                                          "true"
-                                      ? Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (_) =>
-                                                  Details1(index: index)))
-                                      : Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (_) =>
-                                                  Details2(index: index))),
+                                   onTap: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (_) => Details1(
+                                              index: index,
+                                              img: snapshot
+                                                  .data!.docs[index]["Thumnail"]
+                                                  .toString(),
+                                              rating: snapshot
+                                                  .data!.docs[index]["rating"]
+                                                  .toString(),
+                                              Coursename: snapshot.data!
+                                                  .docs[index]["Course name"]
+                                                  .toString(),
+                                              name: snapshot
+                                                  .data!.docs[index]["name"]
+                                                  .toString(),
+                                              Price: snapshot
+                                                  .data!.docs[index]["Price"]
+                                                  .toString(),
+                                              star: double.parse(
+                                                snapshot
+                                                    .data!.docs[index]["rating"]
+                                                    .toString(),
+                                              ),
+                                              videoUrl: snapshot
+                                                  .data!.docs[index]["videos"],
+                                              id: snapshot
+                                                  .data!.docs[index]["id"]
+                                                  .toString()))),
                                   child: Container(
                                     width: 158.72.h,
                                     child: Column(

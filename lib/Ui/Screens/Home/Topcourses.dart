@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_learning_firebase/Ui/Components/Home%20Container1.dart';
 
-import 'package:e_learning_firebase/Ui/Components/Home%20Container2.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -56,7 +57,7 @@ class _TopcoursesState extends State<Topcourses> {
                       itemBuilder: (context, index) { 
                            return  Padding(
                              padding: const EdgeInsets.symmetric(horizontal: 5),
-                             child: Home_container2(
+                             child: Home_container1(
                               
                                         img: snapshot.data!.docs[index]["Thumnail"]
                                             .toString(),
@@ -69,7 +70,9 @@ class _TopcoursesState extends State<Topcourses> {
                                             .toString(),
                                         Price: snapshot.data!.docs[index]["Price"]
                                             .toString(), star: double.parse(snapshot.data!.docs[index]["rating"]
-                                            .toString()), index: index,),
+                                            .toString()), index: index, videoUrl: snapshot.data!.docs[index]["videos"], id: snapshot.data!.docs[index]["id"]
+                                            .toString()
+                                            ,),
                            );
           
                       });

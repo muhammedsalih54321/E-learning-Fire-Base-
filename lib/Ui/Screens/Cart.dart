@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:e_learning_firebase/Ui/Screens/Home/section1/Details1.dart';
-import 'package:e_learning_firebase/Ui/Screens/Home/section2/Details2.dart';
+import 'package:e_learning_firebase/Ui/Screens/Home/Details1.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -25,7 +25,6 @@ class Cart extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-      
           title: Text(
             'Cart',
             style: GoogleFonts.plusJakartaSans(
@@ -82,7 +81,7 @@ class Cart extends StatelessWidget {
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2,
-                               childAspectRatio: 299 / 400,
+                                  childAspectRatio: 299 / 400,
                                   crossAxisSpacing: 6,
                                   mainAxisSpacing: 10),
                           itemBuilder: (context, index) {
@@ -90,20 +89,37 @@ class Cart extends StatelessWidget {
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 5),
                                 child: GestureDetector(
-                                  onTap: () => snapshot
-                                              .data!.docs[index]["ischecked"]
-                                              .toString() ==
-                                          "true"
-                                      ? Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (_) =>
-                                                  Details1(index: index)))
-                                      : Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (_) =>
-                                                  Details2(index: index))),
+                                  onTap: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (_) => Details1(
+                                              index: index,
+                                              img: snapshot
+                                                  .data!.docs[index]["Thumnail"]
+                                                  .toString(),
+                                              rating: snapshot
+                                                  .data!.docs[index]["rating"]
+                                                  .toString(),
+                                              Coursename: snapshot.data!
+                                                  .docs[index]["Course name"]
+                                                  .toString(),
+                                              name: snapshot
+                                                  .data!.docs[index]["name"]
+                                                  .toString(),
+                                              Price: snapshot
+                                                  .data!.docs[index]["Price"]
+                                                  .toString(),
+                                              star: double.parse(
+                                                snapshot
+                                                    .data!.docs[index]["rating"]
+                                                    .toString(),
+                                              ),
+                                              videoUrl: snapshot
+                                                  .data!.docs[index]["videos"],
+                                              id: snapshot
+                                                  .data!.docs[index]["id"]
+                                                  .toString()))),
+
                                   child: Container(
                                     width: 158.72.h,
                                     child: Column(

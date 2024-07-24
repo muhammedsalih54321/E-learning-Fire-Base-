@@ -1,8 +1,13 @@
+
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_learning_firebase/Ui/Screens/Chat.dart';
 import 'package:e_learning_firebase/Ui/Screens/Course.dart';
 import 'package:e_learning_firebase/Ui/Screens/Home/Home.dart';
 import 'package:e_learning_firebase/Ui/Screens/Profile/Profile.dart';
 import 'package:e_learning_firebase/Ui/Screens/Search.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,10 +20,26 @@ class Bottomnavigation extends StatefulWidget {
 }
 
 class _BottomnavigationState extends State<Bottomnavigation> {
+
+  // Future<void> profile() async {
+  //    final firestoreCollections = FirebaseFirestore
+  //                             .instance
+  //                             .collection('Users')
+  //                             .doc(auth.currentUser!.uid.toString());
+
+  //                         DocumentSnapshot<Map<String, dynamic>> querySnapshot =
+  //                             await firestoreCollections.get();
+  // }
+
+
+  FirebaseAuth auth = FirebaseAuth.instance; 
+
+
   final screen = [Home(), Course(), Search(), Chat(), Profile()];
   int currentindex = 0;
   @override
-  Widget build(BuildContext context) {
+ Widget build(BuildContext context){
+    
     return Scaffold(
       bottomNavigationBar: Container(
         height: 71.h,
@@ -125,17 +146,21 @@ class _BottomnavigationState extends State<Bottomnavigation> {
                   ),
                   label: 'Account'),
               BottomNavigationBarItem(
+                
                   icon: Column(
+                    
                     children: [
                       Container(
                         width: 24.w,
                         height: 24.h,
                         decoration: ShapeDecoration(
-                          image: DecorationImage(
-                            image: NetworkImage(
-                                "https://via.placeholder.com/24x24"),
-                            fit: BoxFit.fill,
-                          ),
+                          // image: DecorationImage(
+                          //   image: NetworkImage(
+                          //    ''
+                          
+                          //      ),
+                          //   fit: BoxFit.fill,
+                          // ),
                           shape: RoundedRectangleBorder(
                             side: BorderSide(
                               width: 1.50.w,

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:e_learning_firebase/Ui/Components/Category%20Container.dart';
+
 import 'package:e_learning_firebase/Ui/Components/Home%20Container1.dart';
-import 'package:e_learning_firebase/Ui/Components/Home%20Container2.dart';
+
 
 import 'package:flutter/material.dart';
 import 'package:flutter_expanded_tile/flutter_expanded_tile.dart';
@@ -22,7 +22,6 @@ late ExpandedTileController _controller3;
 
 class _CategoriesState extends State<Categories> {
   void initState() {
-  
     _controller1 = ExpandedTileController(isExpanded: false);
     _controller2 = ExpandedTileController(isExpanded: false);
     _controller3 = ExpandedTileController(isExpanded: false);
@@ -76,7 +75,7 @@ class _CategoriesState extends State<Categories> {
                           itemBuilder: (BuildContext context, int index) {
                             return Padding(
                               padding: const EdgeInsets.only(right: 30),
-                              child: Category_container(
+                              child: Home_container1(
                                 img: snapshot
                                     .data!.docs[0]["courses"][index]['Thumnail']
                                     .toString(),
@@ -98,6 +97,11 @@ class _CategoriesState extends State<Categories> {
                                       .toString(),
                                 ),
                                 index: index,
+                                 videoUrl: snapshot.data!.docs[0]["courses"]
+                                    [index]['videos'],
+                                id: snapshot
+                                    .data!.docs[0]["courses"][index]['id']
+                                    .toString(),
                               ),
                             );
                           },
@@ -163,6 +167,11 @@ class _CategoriesState extends State<Categories> {
                                       .toString(),
                                 ),
                                 index: index,
+                                 videoUrl: snapshot.data!.docs[1]["courses"]
+                                    [index]['videos'],
+                                id: snapshot
+                                    .data!.docs[1]["courses"][index]['id']
+                                    .toString(),
                               ),
                             );
                           },
@@ -206,7 +215,7 @@ class _CategoriesState extends State<Categories> {
                           itemBuilder: (BuildContext context, int index) {
                             return Padding(
                               padding: const EdgeInsets.only(right: 30),
-                              child: Home_container2(
+                              child: Home_container1(
                                 img: snapshot
                                     .data!.docs[2]["courses"][index]['Thumnail']
                                     .toString(),
@@ -227,7 +236,12 @@ class _CategoriesState extends State<Categories> {
                                       .data!.docs[2]["courses"][index]['rating']
                                       .toString(),
                                 ),
-                                index:index,
+                                index: index,
+                                videoUrl: snapshot.data!.docs[2]["courses"]
+                                    [index]['videos'],
+                                id: snapshot
+                                    .data!.docs[2]["courses"][index]['id']
+                                    .toString(),
                               ),
                             );
                           },

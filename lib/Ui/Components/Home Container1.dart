@@ -1,5 +1,5 @@
 
-import 'package:e_learning_firebase/Ui/Screens/Home/section1/Details1.dart';
+import 'package:e_learning_firebase/Ui/Screens/Home/Details1.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,18 +13,20 @@ class Home_container1 extends StatelessWidget {
   final String Price;
   final double star;
   final int index;
+  final String id;
+  final List<dynamic> videoUrl;
   const Home_container1(
       {super.key,
       required this.img,
       required this.rating,
       required this.Coursename,
       required this.name,
-      required this.Price, required this.star, required this.index});
+      required this.Price, required this.star, required this.index, required this.videoUrl, required this.id});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.push(context,MaterialPageRoute(builder: (_)=>Details1(index: index))),
+      onTap: () => Navigator.push(context,MaterialPageRoute(builder: (_)=>Details1(index: index, img: img, rating: rating, Coursename: Coursename, name: name, Price: Price, star: star, videoUrl:videoUrl, id:id,))),
       child: Container(
       
         width: 158.72.h,
