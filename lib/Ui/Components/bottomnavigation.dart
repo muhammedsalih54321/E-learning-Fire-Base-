@@ -1,6 +1,3 @@
-
-import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_learning_firebase/Ui/Screens/Chat.dart';
 import 'package:e_learning_firebase/Ui/Screens/Course.dart';
@@ -20,26 +17,33 @@ class Bottomnavigation extends StatefulWidget {
 }
 
 class _BottomnavigationState extends State<Bottomnavigation> {
+  final firestore1 = FirebaseFirestore.instance.collection('Users').snapshots();
+  final auth = FirebaseAuth.instance;
+  int index = 0;
+  Future<void> getUser(AsyncSnapshot<QuerySnapshot> snapshot) async {
+    final firestoreCollection = FirebaseFirestore.instance.collection('Users');
 
-  // Future<void> profile() async {
-  //    final firestoreCollections = FirebaseFirestore
-  //                             .instance
-  //                             .collection('Users')
-  //                             .doc(auth.currentUser!.uid.toString());
+    // Get all documents in the subcollection
+    QuerySnapshot querySnapshot = await firestoreCollection.get();
 
-  //                         DocumentSnapshot<Map<String, dynamic>> querySnapshot =
-  //                             await firestoreCollections.get();
-  // }
+    // Get data from docs and convert map to List
 
-
-  FirebaseAuth auth = FirebaseAuth.instance; 
-
+    for (int i = 0; i < querySnapshot.docs.length; i++) {
+      if (querySnapshot.docs[i]['id'].toString() ==
+          auth.currentUser!.uid.toString()) {
+        setState(() {
+          index = i;
+        });
+      } else {
+     
+      }
+    }
+  }
 
   final screen = [Home(), Course(), Search(), Chat(), Profile()];
   int currentindex = 0;
   @override
- Widget build(BuildContext context){
-    
+  Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: Container(
         height: 71.h,
@@ -146,31 +150,55 @@ class _BottomnavigationState extends State<Bottomnavigation> {
                   ),
                   label: 'Account'),
               BottomNavigationBarItem(
-                
                   icon: Column(
-                    
                     children: [
-                      Container(
-                        width: 24.w,
-                        height: 24.h,
-                        decoration: ShapeDecoration(
-                          // image: DecorationImage(
-                          //   image: NetworkImage(
-                          //    ''
-                          
-                          //      ),
-                          //   fit: BoxFit.fill,
-                          // ),
-                          shape: RoundedRectangleBorder(
-                            side: BorderSide(
-                              width: 1.50.w,
-                              strokeAlign: BorderSide.strokeAlignOutside,
-                              color: Color(0xFFF6C354),
-                            ),
-                            borderRadius: BorderRadius.circular(83.64.r),
-                          ),
-                        ),
-                      ),
+                      StreamBuilder<QuerySnapshot>(
+                          stream: firestore1,
+                          builder:
+                              (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                            if (!snapshot.hasData) {
+                              return Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                            if (snapshot.hasError) {
+                              return Center(
+                                child: Text('error'),
+                              );
+                            }
+                            if (snapshot.hasData) {
+                              getUser(snapshot);
+                              return Container(
+                                  width: 24.w,
+                                  height: 24.h,
+                                  decoration: ShapeDecoration(
+                                    shape: RoundedRectangleBorder(
+//
+                                      side: BorderSide(
+                                        width: 1.50.w,
+                                        strokeAlign:
+                                            BorderSide.strokeAlignOutside,
+                                        color: Color(0xFFF6C354),
+                                      ),
+                                      borderRadius:
+                                          BorderRadius.circular(83.64.r),
+                                    ),
+                                  ),
+                                  child: snapshot
+                                          .data!.docs[index]["Profile"].isEmpty
+                                      ? Center(
+                                          child: Icon(Icons.person),
+                                        )
+                                      : ClipOval(
+                                          child: Image.network(
+                                          snapshot.data!.docs[index]["Profile"]
+                                              .toString(),
+                                          fit: BoxFit.cover,
+                                        )));
+                            } else {
+                              return SizedBox();
+                            }
+                          }),
                       SizedBox(
                         height: 5.h,
                       ),
@@ -190,3 +218,19 @@ class _BottomnavigationState extends State<Bottomnavigation> {
     );
   }
 }
+//  decoration: ShapeDecoration(
+//                               color: Color(0xFF477B72),
+//                               shape: RoundedRectangleBorder(
+//                                 borderRadius: BorderRadius.circular(83.64.r),
+//                               ),
+//                             ),
+//                             child: snapshot.data!.docs[index]["Profile"].isEmpty
+//                                 ? Center(
+//                                     child: Icon(Icons.person),
+//                                   )
+//                                 : ClipOval(
+//                                     child: Image.network(
+//                                     snapshot.data!.docs[index]["Profile"]
+//                                         .toString(),
+//                                     fit: BoxFit.cover,
+//                                   ))),

@@ -75,8 +75,9 @@ class _DetailsState extends State<Details1> {
 
   @override
   void initState() {
-    initializePlay(videoPath:widget.videoUrl.first["URL"]);
- 
+    initializePlay(videoPath: widget.videoUrl.first["URL"]);
+    checkFavourate();
+    checkSaved();
     super.initState();
   }
 
@@ -156,15 +157,12 @@ class _DetailsState extends State<Details1> {
   }
 
   Future<void> checkFavourate() async {
-    final firestoreCollection = FirebaseFirestore.instance.collection('Users');
-    final userDoc = firestoreCollection.doc(auth.currentUser!.uid);
+    final firestoreCollection = FirebaseFirestore.instance
+        .collection('Users')
+        .doc(auth.currentUser!.uid)
+        .collection('favouratecourse');
 
-    // Access the subcollection
-    final subcollection = userDoc
-        .collection('favouratecourse'); // Replace with your subcollection name
-
-    // Get all documents in the subcollection
-    QuerySnapshot querySnapshot = await subcollection.get();
+    QuerySnapshot querySnapshot = await firestoreCollection.get();
 
     // Get data from docs and convert map to List
 
@@ -185,7 +183,6 @@ class _DetailsState extends State<Details1> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
         body: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -219,8 +216,27 @@ class _DetailsState extends State<Details1> {
                 children: [
                   IconButton(
                       onPressed: () {
-                        
-   checkFavourate();
+                        checkFavourate();
+                        if (favourate==true) {
+                         firestorecollection
+                            .doc(auth.currentUser!.uid.toString())
+                            .collection("favouratecourse")
+                            .doc(widget.id.toString()).delete().then(
+                          (value) {
+                            ToastMessage()
+                                .toastmessage(message: 'remove');
+                            setState(() {
+                              favourate = false;
+                            });
+                          },
+                        ).onError(
+                          (error, stackTrace) {
+                            ToastMessage()
+                                .toastmessage(message: error.toString());
+                          },
+                        );
+                            
+                        }else{
                         firestorecollection
                             .doc(auth.currentUser!.uid.toString())
                             .collection("favouratecourse")
@@ -239,7 +255,7 @@ class _DetailsState extends State<Details1> {
                             ToastMessage()
                                 .toastmessage(message: 'Saved succesfully');
                             setState(() {
-                              favourate == true;
+                              favourate = true;
                             });
                           },
                         ).onError(
@@ -248,7 +264,7 @@ class _DetailsState extends State<Details1> {
                                 .toastmessage(message: error.toString());
                           },
                         );
-                      },
+                      }},
                       icon: favourate == true
                           ? Icon(
                               Icons.favorite,
@@ -257,7 +273,27 @@ class _DetailsState extends State<Details1> {
                           : Icon(Icons.favorite_border_outlined)),
                   IconButton(
                       onPressed: () {
-                          checkSaved();
+                        checkSaved();
+                         if (saved==true) {
+                         firestorecollection
+                            .doc(auth.currentUser!.uid.toString())
+                            .collection("savedcourse")
+                            .doc(widget.id.toString()).delete().then(
+                          (value) {
+                            ToastMessage()
+                                .toastmessage(message: 'remove');
+                            setState(() {
+                              saved = false;
+                            });
+                          },
+                        ).onError(
+                          (error, stackTrace) {
+                            ToastMessage()
+                                .toastmessage(message: error.toString());
+                          },
+                        );
+                            
+                        }else{
 
                         firestorecollection
                             .doc(auth.currentUser!.uid.toString())
@@ -275,9 +311,9 @@ class _DetailsState extends State<Details1> {
                         }).then(
                           (value) {
                             ToastMessage()
-                                .toastmessage(message: 'Saved succesfully');
+                                .toastmessage(message: 'remove');
                             setState(() {
-                              saved == true;
+                              saved = true;
                             });
                           },
                         ).onError(
@@ -286,7 +322,7 @@ class _DetailsState extends State<Details1> {
                                 .toastmessage(message: error.toString());
                           },
                         );
-                      },
+                      }},
                       icon: saved == true
                           ? Icon(
                               Icons.bookmark,
