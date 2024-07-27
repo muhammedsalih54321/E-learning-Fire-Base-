@@ -43,6 +43,12 @@ class _EditState extends State<Edit> {
       }
     });
   }
+  
+  @override
+  void initState() {
+  
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,8 +71,11 @@ class _EditState extends State<Edit> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 25),
           child: StreamBuilder(
+
               stream: firestore1,
               builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          
+                            
                 return SingleChildScrollView(
                   child: Column(
                     children: [
@@ -145,6 +154,7 @@ class _EditState extends State<Edit> {
                         height: 2.h,
                       ),
                       TextFormField(
+                        
                         textInputAction: TextInputAction.next,
                         controller: updated,
                         style: TextStyle(color: Colors.black),

@@ -34,9 +34,7 @@ class _BottomnavigationState extends State<Bottomnavigation> {
         setState(() {
           index = i;
         });
-      } else {
-     
-      }
+      } else {}
     }
   }
 
@@ -194,7 +192,9 @@ class _BottomnavigationState extends State<Bottomnavigation> {
                                           snapshot.data!.docs[index]["Profile"]
                                               .toString(),
                                           fit: BoxFit.cover,
-                                        )));
+                                        ))
+                                        
+                                        );
                             } else {
                               return SizedBox();
                             }

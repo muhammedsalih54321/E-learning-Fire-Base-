@@ -22,6 +22,7 @@ class Chat extends StatelessWidget {
         .collection('Users')
         .doc(auth.currentUser!.uid)
         .collection('chat')
+        .orderBy('id')
         .snapshots();
     return Scaffold(
       appBar: AppBar(
@@ -61,27 +62,29 @@ class Chat extends StatelessWidget {
               return ListView.builder(
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
-                  return snapshot.data!.docs[index]['response'] == ""
-                      ? ChatBubble(
-                          clipper:
-                              ChatBubbleClipper1(type: BubbleType.sendBubble),
-                          alignment: Alignment.topRight,
-                          margin: EdgeInsets.only(top: 20),
-                          backGroundColor: Color(0xAD477B72),
-                          child: Container(
-                            constraints: BoxConstraints(
-                              maxWidth: MediaQuery.of(context).size.width * 0.7,
-                            ),
-                            child: Text(
-                              snapshot.data!.docs[index]['message'].toString(),
-                              style: TextStyle(color: Colors.white),
-                            ),
+                  return Column(
+                    children: [
+                      ChatBubble(
+                        clipper:
+                            ChatBubbleClipper1(type: BubbleType.sendBubble),
+                        alignment: Alignment.topRight,
+                        margin: EdgeInsets.only(top: 20),
+                        backGroundColor: Color(0xAD477B72),
+                        child: Container(
+                          constraints: BoxConstraints(
+                            maxWidth: MediaQuery.of(context).size.width * 0.7,
                           ),
-                        )
-                      : ChatBubble(
+                          child: Text(
+                            snapshot.data!.docs[index]['message'].toString(),
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                      if (snapshot.data!.docs[index]['response'] != "")
+                        ChatBubble(
                           clipper: ChatBubbleClipper1(
                               type: BubbleType.receiverBubble),
-                          alignment: Alignment.bottomLeft,
+                          alignment: Alignment.topLeft,
                           margin: EdgeInsets.only(top: 20),
                           backGroundColor: Color(0xFFF6C354),
                           child: Container(
@@ -93,7 +96,9 @@ class Chat extends StatelessWidget {
                               style: TextStyle(color: Colors.white),
                             ),
                           ),
-                        );
+                        ),
+                    ],
+                  );
                 },
               );
             } else {
@@ -126,18 +131,14 @@ class Chat extends StatelessWidget {
                             'id': id,
                             'ischeked': true,
                             "message": chat.text.toString(),
-                            "response": "",
-                          }).then(
-                            (value) {
-                             
-                              chat.clear();
-                            },
-                          ).onError(
-                            (error, stackTrace) {
-                              ToastMessage()
-                                  .toastmessage(message: error.toString());
-                            },
-                          );
+                            "response":
+                                "", // Set response to empty string initially
+                          }).then((value) {
+                            chat.clear();
+                          }).onError((error, stackTrace) {
+                            ToastMessage()
+                                .toastmessage(message: error.toString());
+                          });
                         }
                       },
                       icon: Icon(Icons.send_outlined)),
