@@ -3,6 +3,7 @@ import 'package:e_learning_firebase/Ui/Components/Profilepagecontainer.dart';
 import 'package:e_learning_firebase/Ui/Components/Toastmessage.dart';
 import 'package:e_learning_firebase/Ui/Screens/Auth/Sign%20in.dart';
 import 'package:e_learning_firebase/Ui/Screens/Profile/Edit.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
