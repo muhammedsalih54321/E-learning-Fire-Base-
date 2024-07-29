@@ -3,6 +3,7 @@ import 'package:e_learning_firebase/Ui/Components/Profilepagecontainer.dart';
 import 'package:e_learning_firebase/Ui/Components/Toastmessage.dart';
 import 'package:e_learning_firebase/Ui/Screens/Auth/Sign%20in.dart';
 import 'package:e_learning_firebase/Ui/Screens/Profile/Edit.dart';
+import 'package:e_learning_firebase/Ui/Screens/Profile/Help%20Center.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -153,7 +154,9 @@ class _ProfileState extends State<Profile> {
                         SizedBox(
                           height: 20.h,
                         ),
-                        Profilepagecontainer(name: 'Achivements'),
+                        GestureDetector(
+                          onTap: () => Navigator.push(context,MaterialPageRoute(builder: (_)=>Help_center())),
+                          child: Profilepagecontainer(name: 'Help Center!')),
                         SizedBox(
                           height: 20.h,
                         ),

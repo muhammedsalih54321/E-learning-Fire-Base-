@@ -6,14 +6,13 @@ import 'package:flutter_chat_bubble/chat_bubble.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class Chat extends StatelessWidget {
-  Chat({super.key});
-
+class Help_center extends StatelessWidget {
   final firestorecollection = FirebaseFirestore.instance.collection('Users');
 
   final formKey = GlobalKey<FormState>();
 
   final chat = TextEditingController();
+  Help_center({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +25,7 @@ class Chat extends StatelessWidget {
         .snapshots();
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: true,
         leading: Padding(
           padding: const EdgeInsets.only(left: 20),
           child: CircleAvatar(
@@ -105,10 +104,10 @@ class Chat extends StatelessWidget {
               return SizedBox();
             }
           }),
-      bottomNavigationBar: Form(
+      bottomSheet: Form(
         key: formKey,
         child: Container(
-          height: 60.h,
+         
           width: double.infinity.w,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -131,8 +130,7 @@ class Chat extends StatelessWidget {
                             'id': id,
                             'ischeked': true,
                             "message": chat.text.toString(),
-                            "response":
-                                "", // Set response to empty string initially
+                            "response": "",
                           }).then((value) {
                             chat.clear();
                           }).onError((error, stackTrace) {

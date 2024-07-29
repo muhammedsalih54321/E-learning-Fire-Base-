@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:e_learning_firebase/Ui/Screens/Chat.dart';
+import 'package:e_learning_firebase/Ui/Screens/E-book.dart';
 import 'package:e_learning_firebase/Ui/Screens/Course.dart';
 import 'package:e_learning_firebase/Ui/Screens/Home/Home.dart';
 import 'package:e_learning_firebase/Ui/Screens/Profile/Profile.dart';
@@ -38,7 +38,7 @@ class _BottomnavigationState extends State<Bottomnavigation> {
     }
   }
 
-  final screen = [Home(), Course(), Search(), Chat(), Profile()];
+  final screen = [Home(), Course(), Search(), E_book(), Profile()];
   int currentindex = 0;
   @override
   Widget build(BuildContext context) {
@@ -130,7 +130,7 @@ class _BottomnavigationState extends State<Bottomnavigation> {
               BottomNavigationBarItem(
                   icon: Column(
                     children: [
-                      Icon(CupertinoIcons.chat_bubble,
+                      Icon(CupertinoIcons.book_circle,
                           size: 28.sp,
                           color:
                               currentindex == 3 ? Colors.orange : Colors.black),
@@ -171,7 +171,6 @@ class _BottomnavigationState extends State<Bottomnavigation> {
                                   height: 24.h,
                                   decoration: ShapeDecoration(
                                     shape: RoundedRectangleBorder(
-//
                                       side: BorderSide(
                                         width: 1.50.w,
                                         strokeAlign:
@@ -218,19 +217,3 @@ class _BottomnavigationState extends State<Bottomnavigation> {
     );
   }
 }
-//  decoration: ShapeDecoration(
-//                               color: Color(0xFF477B72),
-//                               shape: RoundedRectangleBorder(
-//                                 borderRadius: BorderRadius.circular(83.64.r),
-//                               ),
-//                             ),
-//                             child: snapshot.data!.docs[index]["Profile"].isEmpty
-//                                 ? Center(
-//                                     child: Icon(Icons.person),
-//                                   )
-//                                 : ClipOval(
-//                                     child: Image.network(
-//                                     snapshot.data!.docs[index]["Profile"]
-//                                         .toString(),
-//                                     fit: BoxFit.cover,
-//                                   ))),

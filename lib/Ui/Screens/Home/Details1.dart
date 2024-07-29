@@ -312,7 +312,7 @@ class _DetailsState extends State<Details1> {
                         }).then(
                           (value) {
                             ToastMessage()
-                                .toastmessage(message: 'remove');
+                                .toastmessage(message: 'added succesful');
                             setState(() {
                               saved = true;
                             });
