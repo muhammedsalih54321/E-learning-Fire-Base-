@@ -4,7 +4,6 @@ import 'package:e_learning_firebase/Ui/Components/Toastmessage.dart';
 import 'package:e_learning_firebase/Ui/Screens/Auth/Sign%20in.dart';
 import 'package:e_learning_firebase/Ui/Screens/Profile/Edit.dart';
 import 'package:e_learning_firebase/Ui/Screens/Profile/Help%20Center.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -60,7 +59,6 @@ class _ProfileState extends State<Profile> {
               letterSpacing: 0.20,
             ),
           ),
-          
         ),
         body: Center(
             child: StreamBuilder<QuerySnapshot>(
@@ -155,8 +153,11 @@ class _ProfileState extends State<Profile> {
                           height: 20.h,
                         ),
                         GestureDetector(
-                          onTap: () => Navigator.push(context,MaterialPageRoute(builder: (_)=>Help_center())),
-                          child: Profilepagecontainer(name: 'Help Center!')),
+                            onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => Help_center())),
+                            child: Profilepagecontainer(name: 'Help Center!')),
                         SizedBox(
                           height: 20.h,
                         ),

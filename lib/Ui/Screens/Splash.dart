@@ -26,7 +26,7 @@ class _SplashState extends State<Splash> {
     } else {
       Timer(
           Duration(seconds: 3),
-          () => Navigator.push(
+          () => Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (_) => Sign_in())));
     }
   }
